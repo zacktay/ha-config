@@ -12,6 +12,8 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 template: !include template.yaml
+input_datetime: !include input_datetime.yaml
+shell_command: !include shell_command.yaml
 
 http:
   ip_ban_enabled: true
@@ -22,36 +24,4 @@ http:
     - 192.168.0.0/16
     - 172.30.33.0/24
 
-input_datetime:
-  last_cleaned_bedroom:
-    name: Last Cleaned Bedroom
-    has_date: true
-    has_time: true
-  last_cleaned_guest:
-    name: Last Cleaned Guest Room
-    has_date: true
-    has_time: true
-  last_cleaned_study:
-    name: Last Cleaned Study
-    has_date: true
-    has_time: true
-  last_cleaned_hallway:
-    name: Last Cleaned Hallway
-    has_date: true
-    has_time: true
-  last_cleaned_living_room:
-    name: Last Cleaned Living Room
-    has_date: true
-    has_time: true
-  last_cleaned_foyer:
-    name: Last Cleaned Foyer
-    has_date: true
-    has_time: true
-  last_cleaned_kitchen:
-    name: Last Cleaned Kitchen
-    has_date: true
-    has_time: true
-  last_cleaned_service_yard:
-    name: Last Cleaned Service Yard
-    has_date: true
-    has_time: true
+
