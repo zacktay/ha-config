@@ -1,1 +1,1 @@
-backup_to_git: "/bin/bash /config/git_backup.sh"
+backup_to_git: "/bin/bash /config/scripts/git_backup.sh"

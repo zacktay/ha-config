@@ -22,7 +22,7 @@ ui_lovelace_minimalist/
 themes/
 image/
 blueprints/
-
+scripts/
 .ha_run.lock
 ip_bans.yaml
 
