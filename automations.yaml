@@ -1,0 +1,4598 @@
+- id: '1730173878574'
+  alias: Storeroom / Doors
+  description: Turns the storeroom light on when the door is opened and off when it
+    is closed.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.storeroom_door_sensor
+    to: 'on'
+    id: Open
+  - trigger: state
+    entity_id:
+    - binary_sensor.storeroom_door_sensor
+    to: 'off'
+    id: Closed
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Door Opened
+        condition: trigger
+        id: Open
+      sequence:
+      - service: script.storeroom_light_on
+    - conditions:
+      - alias: Door Closed
+        condition: trigger
+        id: Closed
+      sequence:
+      - service: script.storeroom_light_off
+  mode: single
+- id: '1731397280884'
+  alias: Foyer / Gate
+  description: ''
+  triggers:
+  - device_id: 515015078765102a0e2656ee96a03b62
+    domain: lock
+    entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+    type: unlocked
+    trigger: device
+    id: Gate Unlocked
+  - device_id: 515015078765102a0e2656ee96a03b62
+    domain: lock
+    entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+    type: unlocking
+    trigger: device
+    id: Gate Unlocking
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: lock.aqara_door_lock_lock_mechanism
+      state:
+      - unlocking
+      - unlocked
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Gate Unlocking
+        - Gate Unlocked
+      sequence:
+      - device_id: 84a3b2bf3a909de5fd3f162ed08a113e
+        domain: lock
+        entity_id: 9c9d19c38ccbfed77e337077ec857567
+        type: unlock
+  mode: single
+- id: '1731830315735'
+  alias: Living Room / Idle
+  description: Turns off the TV or AC after a long period of inactivity in the living
+    room.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.living_room_presence_sensor_presence_sensor_1
+    to: 'off'
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+    id: Presence
+  - trigger: state
+    entity_id:
+    - climate.daikinap53642
+    to:
+    - cool
+    - dry
+    - fan_only
+    - heat
+    - heat_cool
+    for:
+      hours: 3
+      minutes: 0
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: No presence detected for 2 hours
+        condition: trigger
+        id: Presence
+      sequence:
+      - if:
+        - condition: state
+          state: 'on'
+          entity_id: media_player.bravia_4k_vh22
+        then:
+        - service: script.living_room_tv_off
+    - conditions:
+      - alias: AC has been on for 3 hours
+        condition: trigger
+        id: AC
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.living_room_presence_sensor_presence_sensor_1
+          state: 'off'
+          for:
+            hours: 2
+            minutes: 0
+            seconds: 0
+        then:
+        - service: script.living_room_ac_off
+  mode: single
+- id: '1732026072011'
+  alias: Common Bathroom / Presence
+  description: Turns bathroom lights on with presence, and off when presence is no
+    longer detected.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor
+    to:
+    - 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor
+    to:
+    - 'off'
+    id: Not Detected
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Presence Detected
+        condition: trigger
+        id: Detected
+      sequence:
+      - service: script.common_bathroom_lights_on
+    - conditions:
+      - alias: Presence Not Detected
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - if:
+        - alias: Toilet cleaning mode is off
+          condition: state
+          entity_id: input_boolean.is_toilet_cleaning
+          state: 'off'
+        then:
+        - service: script.common_bathroom_lights_off
+  mode: single
+- id: '1732633095256'
+  alias: Bathroom / Toilet Cleaning
+  description: Toggles toilet cleaning mode, turning lights on/off accordingly.
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.is_toilet_cleaning
+    from: 'on'
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.is_toilet_cleaning
+    from: 'off'
+    to: 'on'
+    id: 'On'
+  conditions: []
+  actions:
+  - if:
+    - alias: Toilet cleaning turned on
+      condition: trigger
+      id: 'On'
+    then:
+    - action: script.bathroom_toilet_cleaning_lights_on
+    else:
+    - action: script.bathroom_toilet_cleaning_lights_off
+  mode: single
+- id: '1732717857919'
+  alias: System / Night Time
+  description: Syncs the 'is_bed_time' input boolean with the 'is_night_time' binary
+    sensor.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.is_night_time
+    to: 'on'
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - binary_sensor.is_night_time
+    to: 'off'
+    id: 'Off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Night time begins
+        condition: trigger
+        id: 'On'
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.is_bed_time
+    - conditions:
+      - alias: Night time ends
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.is_bed_time
+  mode: queued
+  max: 10
+- id: '1737957273678'
+  alias: Bathroom / Switches
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.bathroom_heater_switch
+    to:
+    - 'on'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Heater has been on for 1 hour
+        condition: trigger
+        id: Heater On
+      sequence:
+      - service: script.bathroom_heater_off
+  mode: single
+- id: '1747658207023'
+  alias: Kitchen / Idle
+  description: Turns off kitchen lights if they have been on for 4 hours and there
+    is no presence.
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.all_kitchen_lights
+    to: 'on'
+    for:
+      hours: 4
+      minutes: 0
+      seconds: 0
+    id: Idle Lights
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Kitchen lights have been on for 4 hours
+        condition: trigger
+        id: Idle Lights
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.kitchen_presence_sensor_fp2_presence_sensor_1
+          state: 'off'
+          for:
+            hours: 1
+            minutes: 0
+            seconds: 0
+        then:
+        - action: script.kitchen_all_lights_off
+          data: {}
+  mode: single
+- id: '1752507989126'
+  alias: System / Away
+  description: Turns off all air conditioners if no motion or presence is detected
+    anywhere for 3 hours.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.all_motion_and_presence_sensors
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 3
+      minutes: 0
+      seconds: 0
+  conditions: []
+  actions:
+  - action: script.system_away_turn_off_acs
+  mode: single
+- id: '1753177121002'
+  alias: Study / Idle
+  description: Turns off study downlights or monitor after a long period of inactivity.
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.all_study_downlights
+    to:
+    - 'on'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+    id: Downlights On
+  - trigger: state
+    entity_id:
+    - binary_sensor.study_presence_sensor_presence_sensor_1
+    to:
+    - 'off'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+    id: Presence Not Detected
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Downlights have been on for 1 hour
+        condition: trigger
+        id: Downlights On
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.study_presence_sensor_presence_sensor_1
+          for:
+            hours: 1
+            minutes: 0
+            seconds: 0
+          state: ''
+        then:
+        - service: script.study_downlights_off
+    - conditions:
+      - alias: No presence detected for 1 hour
+        condition: trigger
+        id: Presence Not Detected
+      sequence:
+      - if:
+        - alias: PC is on
+          condition: state
+          entity_id: input_boolean.pc_power_state
+          state: 'on'
+        then:
+        - service: script.study_monitor_off
+  mode: single
+- id: '1754620299757'
+  alias: Balcony / Idle
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.balcony_t1
+    to: 'on'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+    id: Idle Light
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Balcony light has been on for 1 hour
+        condition: trigger
+        id: Idle Light
+      sequence:
+      - if:
+        - alias: No presence on balcony
+          condition: state
+          entity_id: binary_sensor.presence_sensor_occupancy_sensor_3
+          state: 'off'
+        then:
+        - service: script.balcony_light_off
+  mode: single
+- id: '1755842027256'
+  alias: Bedside / Switches
+  description: ''
+  triggers:
+  - device_id: 3b576c1c397977978d58502ff6496ad5
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2 (Z)
+  - device_id: 316b7ed5450f2c441700834b67199a3e
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2 (S)
+  - device_id: 3b576c1c397977978d58502ff6496ad5
+    domain: homekit_controller
+    type: button3
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 3 (Z)
+  - device_id: 316b7ed5450f2c441700834b67199a3e
+    domain: homekit_controller
+    type: button3
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 3 (S)
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 2 (Toggle Bed Time)
+        condition: trigger
+        id:
+        - Single Press Button 2 (S)
+        - Single Press Button 2 (Z)
+      sequence:
+      - service: script.bed_time_toggle
+    - conditions:
+      - alias: Button 3 (Toggle Master AC)
+        condition: trigger
+        id:
+        - Single Press Button 3 (S)
+        - Single Press Button 3 (Z)
+      sequence:
+      - service: script.master_ac_toggle
+  mode: single
+- id: '1757938774368'
+  alias: Living Room / Movie Mode
+  description: Toggles movie mode on/off by calling the respective scripts.
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.is_movie_mode
+    from: 'off'
+    to: 'on'
+    id: 'on'
+  - trigger: state
+    entity_id:
+    - input_boolean.is_movie_mode
+    from: 'on'
+    to: 'off'
+    id: 'off'
+  conditions: []
+  actions:
+  - if:
+    - alias: Movie mode turned on
+      condition: trigger
+      id: 'on'
+    then:
+    - action: script.living_room_movie_mode_on
+    else:
+    - action: script.living_room_movie_mode_off
+  mode: queued
+  max: 10
+- id: '1762152588659'
+  alias: Signal / Laundry Rack
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_light_on_occupancy
+    id: Light On
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_light_off_occupancy
+    id: Light Off
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_highest_occupancy
+    to: 'on'
+    id: Rack Highest
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_lowest_occupancy
+    to: 'on'
+    id: Rack Lowest
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_disinfect_off_occupancy
+    to: 'on'
+    id: Disinfect Off
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_disinfect_on_occupancy
+    to: 'on'
+    id: Disinfect On
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_drying_off_occupancy
+    to: 'on'
+    id: Drying Off
+  - trigger: state
+    entity_id:
+    - binary_sensor.signal_rack_drying_on_occupancy
+    to: 'on'
+    id: Drying On
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Light On
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.laundry_light_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Light Off
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.laundry_light_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Drying Off
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.laundry_rack_air_drying_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Rack Highest
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.laundry_rack_position_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Rack Lowest
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.laundry_rack_position_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Drying On
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.laundry_rack_air_drying_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Disinfect On
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.laundry_rack_disinfect_state
+    - conditions:
+      - condition: trigger
+        id:
+        - Disinfect Off
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.laundry_rack_disinfect_state
+  mode: single
+- id: '1762152965881'
+  alias: Signal / Laundry Rack Light
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_light_state
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_light_state
+    to: 'on'
+    id: 'On'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - type: turn_on
+        device_id: c60796e49343357cd9985afdbe89392a
+        entity_id: 15de1fa7d58b450df9b34c82dbe44839
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - type: turn_on
+        device_id: fd4b4cd25eb818288e01c5664aa5bb87
+        entity_id: bc1fc67933d509c248cea632baf81b9a
+        domain: switch
+  mode: single
+- id: '1762153189272'
+  alias: Signal / Laundry Rack Position
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_position_state
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_position_state
+    to: 'on'
+    id: 'On'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - type: turn_on
+        device_id: a932ebff922574ab5df8839254f8f886
+        entity_id: 3bac38d848c7b2ca9d15df38a608a87e
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - type: turn_on
+        device_id: 34257f3b9fbc87519020addddcfb460f
+        entity_id: cc07187f827c1242a1ccd2752026e388
+        domain: switch
+  mode: single
+- id: '1762153743353'
+  alias: Signal / Laundry Rack Drying
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_air_drying_state
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_air_drying_state
+    to: 'on'
+    id: 'On'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - type: turn_on
+        device_id: 8ef8888c6b1527c1bcb6a9c3f437a0c0
+        entity_id: 05184a3af2b386479c55e63d0138d601
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - type: turn_on
+        device_id: dc78a13553ed9b64f43f1b8d0bfe5a3a
+        entity_id: b737a522367f13ff5cee1dfc750c5001
+        domain: switch
+  mode: single
+- id: '1762153998939'
+  alias: System / Startup Tasks
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - action: script.system_startup_laundry_rack_sync
+  mode: single
+- id: '1762154130381'
+  alias: Signal / Laundry Rack Disinfect
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_disinfect_state
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.laundry_rack_disinfect_state
+    to: 'on'
+    id: 'On'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - type: turn_on
+        device_id: 775ac19edfd8a36ad4ecb03a9d64124f
+        entity_id: c4f90087978081866d1ec0ac69c72bf7
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - type: turn_on
+        device_id: 0ac5ed0c617d733f6cdd4fdfb005774e
+        entity_id: 46c9a7e374847041cf1d6505a775bfde
+        domain: switch
+  mode: single
+- id: '1762307492695'
+  alias: Hallway / Motion
+  description: Turns hallway lights on with motion and off after 1 minute of no motion.
+  triggers:
+  - trigger: motion.detected
+    target:
+      area_id: hallway
+    options:
+      behavior: any
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.hallway_motion_sensor
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    id: Not Detected
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Motion Detected and Lights are Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: state
+          entity_id: light.all_hallway_downlights
+          state: 'off'
+      sequence:
+      - service: script.hallway_lights_on
+    - conditions:
+      - alias: No Motion Detected for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.hallway_lights_off
+  mode: single
+- id: '1762308086680'
+  alias: Dining / Hallway Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_9f42_presence_sensor_2
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_9f42_presence_sensor_2
+    to: 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions:
+  - condition: state
+    entity_id: input_boolean.gaming_mode
+    state:
+    - 'off'
+  actions:
+  - choose:
+    - conditions:
+      - alias: Detected, Dark, and Lights Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: numeric_state
+          entity_id: sensor.dining_area_presence_sensor_light_sensor_light_level
+          below: 15
+        - condition: state
+          entity_id: light.living_downlights_r1
+          state: 'off'
+      sequence:
+      - service: script.dining_hallway_light_on
+    - conditions:
+      - alias: Not Detected for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.dining_hallway_light_off
+  mode: single
+- id: '1762308474077'
+  alias: Dining / Table Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_9f42_presence_sensor_3
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_9f42_presence_sensor_3
+    to: 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions:
+  - condition: state
+    entity_id: input_boolean.gaming_mode
+    state:
+    - 'off'
+  actions:
+  - choose:
+    - conditions:
+      - alias: Detected, Dark, and Lights Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: numeric_state
+          entity_id: sensor.dining_area_presence_sensor_light_sensor_light_level
+          below: 15
+        - condition: state
+          entity_id: light.all_dining_lights
+          state: 'off'
+      sequence:
+      - service: script.dining_table_lights_on
+    - conditions:
+      - alias: Not Detected for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.dining_table_lights_off
+  mode: single
+- id: '1762308787533'
+  alias: Study / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.study_presence_sensor_presence_sensor_1
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.study_presence_sensor_presence_sensor_1
+    to: 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: illuminance.crossed_threshold
+    target:
+      entity_id: sensor.study_presence_sensor_light_sensor_light_level
+    options:
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 30
+    id: Too Bright
+    enabled: false
+  - trigger: illuminance.crossed_threshold
+    target:
+      entity_id: sensor.study_presence_sensor_light_sensor_light_level
+    options:
+      threshold:
+        type: below
+        value:
+          active_choice: number
+          number: 10
+    id: Too Dim
+    enabled: false
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Detected
+      sequence:
+      - alias: Lights
+        if:
+        - condition: numeric_state
+          entity_id: sensor.study_presence_sensor_light_sensor_light_level
+          below: 10
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.all_study_downlights
+      - alias: Light bar
+        if: []
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.study_light_bar
+            - light.study_light_bar_ambilight
+      - alias: Monitor
+        if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.pc_power_state
+            state: 'on'
+        then:
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.z_p304mz_p304m_power_strip_1_z_2_monitor
+      alias: Detected and Light Level and Lights Off
+    - conditions:
+      - condition: trigger
+        id:
+        - Too Dim
+      sequence:
+      - alias: Lights
+        if:
+        - condition: occupancy.is_detected
+          target:
+            entity_id: binary_sensor.study_presence_sensor_presence_sensor_1
+          options: {}
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.all_study_downlights
+      - alias: Light bar
+        if:
+        - condition: occupancy.is_detected
+          target:
+            entity_id: binary_sensor.study_presence_sensor_presence_sensor_1
+          options: {}
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.study_light_bar
+            - light.study_light_bar_ambilight
+      alias: Too Dim
+    - conditions:
+      - condition: trigger
+        id:
+        - Not Detected
+        - Too Bright
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.all_study_downlights
+          - light.study_light_bar
+          - light.study_light_bar_ambilight
+      alias: Not Detected or Too Bright
+  mode: single
+- id: '1762311177779'
+  alias: Study / Air Purifier
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.study_air_purifier_4_mean
+    above: 10
+    id: 'On'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.study_air_purifier_4_mean
+    id: 'Off'
+    below: 6
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - device_id: 7663297a8476c938a57e7df6b9786c73
+        domain: number
+        entity_id: d086702357a50e0d34f5c921f3ca3097
+        type: set_value
+        value: 3
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - action: fan.set_preset_mode
+        metadata: {}
+        data:
+          preset_mode: Auto
+        target:
+          device_id: 7663297a8476c938a57e7df6b9786c73
+  mode: single
+- id: '1762311450582'
+  alias: Study / Windows
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.study_windows
+    id: Open
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.study_windows
+    id: Closed
+    to: 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Open
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.study_day_curtain
+          state: closed
+        then:
+        - action: cover.open_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.study_day_curtain
+      - if:
+        - condition: state
+          entity_id: cover.study_night_curtain_2
+          state:
+          - closed
+        then:
+        - action: cover.open_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - cover.study_night_curtain_2
+    - conditions:
+      - condition: trigger
+        id:
+        - Closed
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.study_day_curtain
+          state: open
+        then:
+        - action: cover.close_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.study_day_curtain
+  mode: queued
+  max: 10
+- id: '1762311761320'
+  alias: Study / Doors
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.contact_sensor
+    to: 'on'
+    id: Open
+  - trigger: state
+    entity_id:
+    - binary_sensor.contact_sensor
+    to: 'off'
+    id: Closed
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Open
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: light.all_study_downlights
+            state: 'off'
+          - condition: numeric_state
+            entity_id: sensor.study_presence_sensor_light_sensor_light_level
+            below: 15
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.all_study_downlights
+  mode: single
+- id: '1762312562148'
+  alias: Study / PC Power
+  description: ''
+  triggers:
+  - type: power
+    device_id: fbbd702e98b0ccb83ba35e7e999609e7
+    entity_id: 491c6c2805f166b014119cb6e38136d6
+    domain: sensor
+    trigger: device
+    above: 10
+    id: 'On'
+  - type: power
+    device_id: fbbd702e98b0ccb83ba35e7e999609e7
+    entity_id: 491c6c2805f166b014119cb6e38136d6
+    domain: sensor
+    trigger: device
+    id: 'Off'
+    below: 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: PC Turned On
+        condition: and
+        conditions:
+        - condition: trigger
+          id: 'On'
+        - condition: state
+          entity_id: input_boolean.pc_power_state
+          state: 'off'
+      sequence:
+      - service: script.study_pc_peripherals_on
+    - conditions:
+      - alias: PC Turned Off
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - service: script.study_pc_peripherals_off
+  mode: single
+- id: '1762312811906'
+  alias: Study / Wireless Switch
+  description: ''
+  triggers:
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button1
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 1
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button1
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 1
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button2
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 2
+  - device_id: 2b41f8fbbf46c69c63ca75b667cc5585
+    domain: homekit_controller
+    type: button2
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Toggle Day Curtain)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.study_day_curtain_toggle
+    - conditions:
+      - alias: Button 1 Double Press (Toggle AC)
+        condition: trigger
+        id: Double Press Button 1
+      sequence:
+      - action: script.study_ac_toggle
+    - conditions:
+      - alias: Button 1 Long Press (Unassigned)
+        condition: trigger
+        id: Long Press Button 1
+      sequence: []
+    - conditions:
+      - alias: Button 2 Single Press (Toggle Night Curtain)
+        condition: trigger
+        id: Single Press Button 2
+      sequence:
+      - action: script.study_night_curtain_toggle
+    - conditions:
+      - alias: Button 2 Double Press (Unassigned)
+        condition: trigger
+        id: Double Press Button 2
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Long Press Button 2 (Clean Study)
+      sequence:
+      - action: script.system_dreame_clean_study
+        metadata: {}
+        data: {}
+  mode: parallel
+  max: 10
+- id: '1762313505682'
+  alias: System / Sunset
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+    id: Sunset
+  - trigger: sun
+    event: sunset
+    offset: 01:00:00
+    id: Sunset (+1H)
+  - trigger: sun
+    event: sunset
+    offset: 02:00:00
+    id: Sunset (+2H)
+  - trigger: sun
+    event: sunset
+    offset: 02:30:00
+    id: Sunset (+2.5H)
+  - trigger: sun
+    event: sunset
+    offset: 03:00:00
+    id: Sunset (+3H)
+  - trigger: sun
+    event: sunset
+    offset: 04:00:00
+    id: Sunset (+4H)
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: At Sunset
+        condition: trigger
+        id: Sunset
+      sequence:
+      - if:
+        - alias: Living room sliding doors are closed
+          condition: state
+          entity_id: binary_sensor.contact_sensor_2
+          state: 'off'
+        then:
+        - service: script.living_day_curtain_close
+      - service: switch.turn_on
+        target:
+          entity_id: switch.adaptive_lighting_sleep_mode_adaptive_guest_lights
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunset (+1H)
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunset (+2H)
+      sequence:
+      - alias: Water Heater
+        if:
+        - condition: state
+          entity_id: binary_sensor.all_motion_and_presence_sensors
+          state: 'on'
+        then:
+        - service: script.bathroom_heater_on
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunset (+3H)
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunset (+4H)
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunset (+2.5H)
+      sequence:
+      - if:
+        - alias: Someone is home and master bedroom is sealed
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.all_motion_and_presence_sensors
+            state: 'on'
+          - condition: state
+            entity_id: binary_sensor.master_windows
+            state: 'off'
+          - condition: state
+            entity_id: binary_sensor.master_door_sensor_3
+            state: 'off'
+          - condition: state
+            entity_id: climate.master_daikin_ac
+            state: 'off'
+        then:
+        - service: script.master_ac_cool_on
+  mode: single
+- id: '1762314118349'
+  alias: System / Midnight
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:01:00
+    id: Midnight
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: At Midnight
+        condition: trigger
+        id: Midnight
+      sequence:
+      - if:
+        - alias: No guests are present
+          condition: state
+          entity_id: input_boolean.has_guest
+          state: 'off'
+        then:
+        - service: script.guest_downlights_off
+        - if:
+          - alias: Guest room windows are closed
+            condition: state
+            entity_id: binary_sensor.guest_windows
+            state: 'off'
+          then:
+          - service: script.guest_day_curtain_close
+      - service: script.reset_daily_booleans
+      - service: script.cycle_storeroom_fan
+  mode: single
+- id: '1762314449173'
+  alias: System / Sunrise
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: -01:00:00
+    id: Sunrise (-1H)
+  - trigger: sun
+    event: sunrise
+    offset: -00:45:00
+    id: Sunrise (-45min)
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: Sunrise
+  - trigger: sun
+    event: sunrise
+    offset: 02:00:00
+    id: Sunrise (+2H)
+  - trigger: sun
+    event: sunrise
+    offset: 01:00:00
+    id: Sunrise (+1H)
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: 1 Hour Before Sunrise
+        condition: trigger
+        id: Sunrise (-1H)
+      sequence:
+      - service: script.bathroom_heater_on
+    - conditions:
+      - alias: 45 Minutes Before Sunrise
+        condition: trigger
+        id: Sunrise (-45min)
+      sequence:
+      - if:
+        - alias: Presence in Master Bedroom
+          condition: state
+          entity_id: binary_sensor.master_presence_sensor_presence_sensor_1
+          state: 'on'
+        then:
+        - service: script.master_night_curtain_open
+      - service: script.vanity_hair_dryer_on
+    - conditions:
+      - alias: At Sunrise
+        condition: trigger
+        id: Sunrise
+      sequence:
+      - if:
+        - alias: No guests are present
+          condition: state
+          entity_id: input_boolean.has_guest
+          state: 'off'
+        then:
+        - service: script.guest_night_curtain_open
+      - service: script.living_curtains_open
+      - service: cover.open_cover
+        target:
+          entity_id: cover.study_night_curtain_2
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunrise (+1H)
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Sunrise (+2H)
+      sequence: []
+  mode: single
+- id: '1762315078625'
+  alias: Foyer / Motion
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.foyer_motion_sensor_group
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.foyer_motion_sensor_group
+    to: 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Motion Detected and Lights are Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: state
+          entity_id: light.all_foyer_lights
+          state: 'off'
+      sequence:
+      - service: script.foyer_lights_on
+    - conditions:
+      - alias: No Motion for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.foyer_lights_off
+  mode: single
+- id: '1762315220825'
+  alias: Foyer / Button
+  description: ''
+  triggers:
+  - device_id: 512c9d8b2d79577be2e106e7ed7cca0a
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press
+  - device_id: 512c9d8b2d79577be2e106e7ed7cca0a
+    domain: homekit_controller
+    type: button1
+    subtype: long_press
+    trigger: device
+    id: Long Press
+  - device_id: 512c9d8b2d79577be2e106e7ed7cca0a
+    domain: homekit_controller
+    type: button1
+    subtype: double_press
+    trigger: device
+    id: Double Press
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Single Press (Lock Gate)
+        condition: trigger
+        id: Single Press
+      sequence:
+      - if:
+        - alias: Gate is unlocked
+          condition: state
+          entity_id: lock.matter_foyer_gate_lock
+          state: unlocked
+        then:
+        - service: lock.lock
+          target:
+            entity_id: lock.matter_foyer_gate_lock
+    - conditions:
+      - alias: Double Press (Secure House)
+        condition: trigger
+        id: Double Press
+      sequence:
+      - service: script.system_secure_house
+    - conditions:
+      - alias: Long Press (All Lights Off)
+        condition: trigger
+        id: Long Press
+      sequence:
+      - service: script.system_all_lights_off
+  mode: queued
+  max: 10
+- id: '1762315771092'
+  alias: Foyer / Doors
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.gate_door_sensor
+    to: 'on'
+    id: Gate Opened
+  - trigger: state
+    entity_id:
+    - binary_sensor.gate_door_sensor
+    to: 'off'
+    id: Gate Closed
+  - trigger: state
+    entity_id:
+    - binary_sensor.main_door_sensor
+    to:
+    - 'on'
+    id: Main Door Opened
+  - trigger: state
+    entity_id:
+    - binary_sensor.main_door_sensor
+    to:
+    - 'off'
+    id: Main Door Closed
+  - trigger: state
+    entity_id:
+    - binary_sensor.foyer_networking_door_sensor
+    to: 'on'
+    id: Networking Door Opened
+  - trigger: state
+    entity_id:
+    - binary_sensor.foyer_networking_door_sensor
+    to: 'off'
+    id: Networking Door Closed
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Gate Opened
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - Gate Closed
+      sequence:
+      - if:
+        - condition: not
+          conditions:
+          - condition: device
+            device_id: 515015078765102a0e2656ee96a03b62
+            domain: lock
+            entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+            type: is_locked
+          - condition: device
+            device_id: 515015078765102a0e2656ee96a03b62
+            domain: lock
+            entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+            type: is_locking
+        then:
+        - device_id: 515015078765102a0e2656ee96a03b62
+          domain: lock
+          entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+          type: lock
+    - conditions:
+      - condition: trigger
+        id:
+        - Main Door Opened
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: light.all_foyer_lights
+            state: 'off'
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.all_foyer_lights
+    - conditions:
+      - condition: trigger
+        id:
+        - Main Door Closed
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - if:
+        - condition: state
+          entity_id: lock.aqara_door_lock_lock_mechanism
+          state: unlocked
+        then:
+        - device_id: 515015078765102a0e2656ee96a03b62
+          domain: lock
+          entity_id: 025aced4f5bdfe893ae0ae433907f8fa
+          type: lock
+    - conditions:
+      - condition: trigger
+        id:
+        - Networking Door Opened
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: 1e4bce58579e676b1eddd9f6f307c200
+    - conditions:
+      - condition: trigger
+        id:
+        - Networking Door Closed
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          device_id: 1e4bce58579e676b1eddd9f6f307c200
+  mode: parallel
+  max: 10
+- id: '1762316453455'
+  alias: Living / Air Purifier
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.living_air_purifier_4_mean
+    above: 10
+    id: 'On'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.living_air_purifier_4_mean
+    id: 'Off'
+    below: 6
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - device_id: ff5481c3a3473e72362a0daadb21471d
+        domain: number
+        entity_id: f44dc050e132a4f477ec6548db9a2af0
+        type: set_value
+        value: 3
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - action: fan.set_preset_mode
+        metadata: {}
+        data:
+          preset_mode: Auto
+        target:
+          device_id:
+          - ff5481c3a3473e72362a0daadb21471d
+  mode: single
+- id: '1762316680768'
+  alias: Living / Wireless Switch
+  description: ''
+  triggers:
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button1
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 1
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button1
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 1
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button2
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 2
+  - device_id: c0f4cd2e9ed91248432d809288a338af
+    domain: homekit_controller
+    type: button2
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Toggle Day Curtain)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.living_day_curtain_toggle
+    - conditions:
+      - alias: Button 1 Double Press (Toggle AC)
+        condition: trigger
+        id: Double Press Button 1
+      sequence:
+      - action: script.living_ac_toggle
+    - conditions:
+      - alias: Button 1 Long Press (Unassigned)
+        condition: trigger
+        id: Long Press Button 1
+      sequence: []
+    - conditions:
+      - alias: Button 2 Single Press (Toggle Ziptrak)
+        condition: trigger
+        id: Single Press Button 2
+      sequence:
+      - action: script.living_ziptrak_toggle
+    - conditions:
+      - alias: Button 2 Double Press (Turn off AC and TV)
+        condition: trigger
+        id: Double Press Button 2
+      sequence:
+      - action: script.living_room_ac_off
+      - action: script.living_room_tv_off
+    - conditions:
+      - alias: Button 2 Long Press (Clean Living Room)
+        condition: trigger
+        id: Long Press Button 2
+      sequence:
+      - action: script.system_clean_living_room
+        metadata: {}
+        data: {}
+  mode: parallel
+  max: 10
+- id: '1762316945471'
+  alias: Living / Switch 4
+  description: ''
+  triggers:
+  - device_id: aa1e06b6452b0106759fbd6c45cc1ad8
+    domain: homekit_controller
+    type: button4
+    subtype: single_press
+    trigger: device
+    id: Single Press
+  - device_id: aa1e06b6452b0106759fbd6c45cc1ad8
+    domain: homekit_controller
+    type: button4
+    subtype: long_press
+    trigger: device
+    id: Long Press
+  - device_id: aa1e06b6452b0106759fbd6c45cc1ad8
+    domain: homekit_controller
+    type: button4
+    subtype: double_press
+    trigger: device
+    id: Double Press
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Single Press (Toggle Day Curtain)
+        condition: trigger
+        id: Single Press
+      sequence:
+      - service: script.living_day_curtain_toggle
+    - conditions:
+      - alias: Double Press (Toggle AC)
+        condition: trigger
+        id: Double Press
+      sequence:
+      - service: script.living_ac_toggle
+    - conditions:
+      - alias: Long Press (Turn off TV, lights, etc.)
+        condition: trigger
+        id: Long Press
+      sequence:
+      - service: script.living_room_tv_off
+      - service: switch.turn_off
+        target:
+          entity_id: switch.study_mosquito_coil
+      - service: script.living_dining_lights_off
+  mode: single
+- id: '1762317115210'
+  alias: Living / Doors
+  description: Saves and restores the living day curtain state when the door is opened
+    and closed, with improved logic.
+  triggers:
+  - entity_id: binary_sensor.contact_sensor_2
+    to: 'on'
+    id: Open
+    trigger: state
+  - entity_id: binary_sensor.contact_sensor_2
+    to: 'off'
+    id: Closed
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Open
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.living_day_curtain
+          state: closed
+        then:
+        - data:
+            scene_id: living_room_day_curtain_state
+            snapshot_entities:
+            - cover.living_day_curtain
+          action: scene.create
+        - target:
+            entity_id: cover.living_day_curtain
+          action: cover.open_cover
+    - conditions:
+      - condition: trigger
+        id: Closed
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ states(''scene.living_room_day_curtain_state'') != ''unavailable''
+            }}'
+        then:
+        - action: scene.turn_on
+          target:
+            entity_id: scene.living_room_day_curtain_state
+          data: {}
+        else:
+        - if:
+          - condition: state
+            entity_id: binary_sensor.is_daytime
+            state: 'off'
+          then:
+          - target:
+              entity_id: cover.living_day_curtain
+            action: cover.close_cover
+  mode: single
+- id: '1762317391087'
+  alias: Living / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_ab0b_presence_sensor_3
+    - binary_sensor.presence_sensor_fp2_ab0b_presence_sensor_2
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_ab0b_presence_sensor_2
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    id: Not Detected
+  conditions:
+  - condition: state
+    entity_id: input_boolean.is_movie_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.baby_in_living
+    state:
+    - 'off'
+  actions:
+  - choose:
+    - conditions:
+      - alias: Detected, Dark, and Lights Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: numeric_state
+          entity_id: sensor.living_room_presence_sensor_light_sensor_light_level
+          below: 15
+        - condition: state
+          entity_id: light.tv_light_group
+          state: 'off'
+      sequence:
+      - service: script.living_tv_lights_on
+    - conditions:
+      - alias: Not Detected for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.living_tv_lights_off
+  mode: parallel
+  max: 10
+- id: '1762318269824'
+  alias: Guest / Wireless Switch
+  description: ''
+  triggers:
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button1
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 1
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button1
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 1
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button2
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 2
+  - device_id: 2b925929716a4301d29e0e22a1339de3
+    domain: homekit_controller
+    type: button2
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Toggle Day Curtain)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.guest_day_curtain_toggle
+    - conditions:
+      - alias: Button 1 Double Press (Toggle AC)
+        condition: trigger
+        id: Double Press Button 1
+      sequence:
+      - action: script.guest_ac_toggle
+    - conditions:
+      - alias: Button 1 Long Press (Play White Noise)
+        condition: trigger
+        id: Long Press Button 1
+      sequence:
+      - action: script.script_white_noise_on_roam_2
+        data: {}
+    - conditions:
+      - alias: Button 2 Single Press (Toggle Night Curtain)
+        condition: trigger
+        id: Single Press Button 2
+      sequence:
+      - action: script.guest_night_curtain_toggle
+    - conditions:
+      - alias: Button 2 Double Press (Unassigned)
+        condition: trigger
+        id: Double Press Button 2
+      sequence: []
+    - conditions:
+      - alias: Button 2 Long Press (Clean Guest)
+        condition: trigger
+        id: Long Press Button 2
+      sequence:
+      - action: script.system_dreame_clean_guest
+        metadata: {}
+        data: {}
+  mode: parallel
+  max: 10
+- id: '1762318453864'
+  alias: Guest / Windows
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_windows
+    id: Window Open
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_windows
+    id: Window Closed
+    to: 'off'
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_mesh_sensor
+    id: Mesh Closed
+    to: 'off'
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_mesh_sensor
+    id: Mesh Opened
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Window Opened
+        condition: trigger
+        id: Window Open
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.guest_day_curtain
+          state: closed
+        - condition: state
+          entity_id: cover.guest_night_curtain
+          state: closed
+        then:
+        - service: script.guest_curtains_open
+    - conditions:
+      - alias: Window Closed
+        condition: trigger
+        id: Window Closed
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.guest_day_curtain
+          state: open
+        then:
+        - service: script.guest_day_curtain_close
+    - conditions:
+      - condition: trigger
+        id:
+        - Mesh Opened
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.guest_windows
+          state:
+          - 'on'
+          for:
+            hours: 0
+            minutes: 1
+            seconds: 0
+        then:
+        - action: notify.mobile_app_pixel_9_pro_xl
+          metadata: {}
+          data:
+            message: Please check the mesh in Guest Room
+            title: Pet Safety Mesh Opened
+    - conditions:
+      - condition: trigger
+        id:
+        - Mesh Closed
+      sequence: []
+  mode: parallel
+  max: 10
+- id: '1762318663762'
+  alias: Guest / Doors
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_door_sensor_2
+    to: 'on'
+    id: Open
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_door_sensor_2
+    to: 'off'
+    id: Closed
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Door Opened
+        condition: trigger
+        id: Open
+      sequence:
+      - if:
+        - alias: Dark, guest mode on, no presence for 5 mins
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: light.all_guest_downlights
+            state: 'off'
+          - condition: numeric_state
+            entity_id: sensor.guest_presence_sensor_fp2_light_sensor_light_level
+            below: 15
+          - condition: state
+            entity_id: input_boolean.has_guest
+            state: 'on'
+          - condition: state
+            entity_id: binary_sensor.guest_presence_sensor_fp2_presence_sensor_1
+            state: 'off'
+            for:
+              minutes: 5
+        then:
+        - service: script.guest_downlights_on
+    - conditions:
+      - alias: Door Closed for 1 Minute
+        condition: trigger
+        id: Closed
+      sequence:
+      - if:
+        - alias: No presence, guest mode on, lights on
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.guest_presence_sensor_fp2_presence_sensor_1
+            state: 'off'
+          - condition: state
+            entity_id: input_boolean.has_guest
+            state: 'on'
+          - condition: state
+            entity_id: light.all_guest_downlights
+            state: 'on'
+        then:
+        - service: script.guest_downlights_off
+  mode: single
+- id: '1762319572395'
+  alias: Master Bathroom / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_bathroom_presence_sensor_2
+    - binary_sensor.master_bathroom_presence_sensor
+    to:
+    - 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_bathroom_presence
+    to:
+    - 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - light.master_l1
+    to:
+    - 'on'
+    id: Not Detected
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Presence Detected
+        condition: trigger
+        id: Detected
+      sequence:
+      - if:
+        - alias: Lights are off
+          condition: state
+          entity_id: light.master_l1
+          state: 'off'
+        then:
+        - service: script.master_bathroom_lights_on
+    - conditions:
+      - alias: No Presence Detected
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - if:
+        - alias: Lights are on and not in cleaning mode
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: light.master_l1
+            state: 'on'
+          - condition: state
+            entity_id: input_boolean.is_toilet_cleaning
+            state: 'off'
+        then:
+        - service: script.master_bathroom_lights_off
+  mode: single
+- id: '1762320584571'
+  alias: Pet / Scheduled Feeding
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+    id: 2AM
+  - trigger: time
+    at: '13:00:00'
+    id: 1PM
+  - trigger: time
+    at: '19:00:00'
+    id: 7PM
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 1PM
+        - 7PM
+      sequence:
+      - if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.study_presence_sensor_presence_sensor_1
+            state:
+            - 'off'
+            for:
+              hours: 1
+              minutes: 0
+              seconds: 0
+          - condition: state
+            entity_id: binary_sensor.master_presence_sensor_presence_sensor_1
+            state:
+            - 'off'
+            for:
+              hours: 1
+              minutes: 0
+              seconds: 0
+        then:
+        - action: script.dispense_10g
+          metadata: {}
+          data: {}
+        - action: notify.mobile_app_pixel_9_pro_xl
+          metadata: {}
+          data:
+            message: Food has been dispensed - 10g
+        - delay:
+            hours: 0
+            minutes: 5
+            seconds: 0
+            milliseconds: 0
+        - action: script.dispense_10g
+          metadata: {}
+          data: {}
+        - action: notify.mobile_app_pixel_9_pro_xl
+          metadata: {}
+          data:
+            message: Food has been dispensed - 10g
+    - conditions:
+      - condition: trigger
+        id:
+        - 2AM
+      sequence:
+      - action: script.dispense_10g
+        metadata: {}
+        data: {}
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          message: Food has been dispensed - 10g
+  mode: single
+- id: '1762320846293'
+  alias: Pet / Water and Food Level Monitoring
+  description: ''
+  triggers:
+  - type: problem
+    device_id: a613c422e70ffe6bb60fd2596ad80964
+    entity_id: 1181e18e85d84ebc3c3bc65a6b40c400
+    domain: binary_sensor
+    trigger: device
+    id: Food Level
+  - type: problem
+    device_id: 7c17b039bdc160ebd2bbd766b944bbff
+    entity_id: d4e2b797caed7dce2a38317a97cedf09
+    domain: binary_sensor
+    trigger: device
+    id: Water Level
+  - type: problem
+    device_id: 1bf3ac9cbdedb00038512fb3466098f3
+    entity_id: 16b3cb8114d102bf2c8e5179a3804a30
+    domain: binary_sensor
+    trigger: device
+    id: Water Level
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Food Level
+      sequence:
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: 'Petkit Food Dispenser Level Low '
+          message: Please refill
+    - conditions:
+      - condition: trigger
+        id:
+        - Water Level
+      sequence:
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          message: Please refill
+          title: Petkit Water Level Low
+  mode: single
+- id: '1762322170527'
+  alias: Service Yard / Motion
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor_2
+    to:
+    - 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor_2
+    to:
+    - 'on'
+    id: Detected
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: No Motion for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - if:
+        - alias: Light is on
+          condition: state
+          entity_id: light.service_yard_l1
+          state: 'on'
+        then:
+        - service: script.service_yard_light_off
+    - conditions:
+      - alias: Motion Detected
+        condition: trigger
+        id: Detected
+      sequence:
+      - if:
+        - alias: Light is off and it is dark
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: light.service_yard_l1
+            state: 'off'
+          - condition: numeric_state
+            entity_id: sensor.presence_sensor_light_sensor_light_level_2
+            below: 20
+        then:
+        - service: script.service_yard_light_on
+  mode: single
+- id: '1762324182356'
+  alias: Master / Wireless Switch
+  description: ''
+  triggers:
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button1
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 1
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button1
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 1
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button2
+    subtype: double_press
+    trigger: device
+    id: Double Press Button 2
+  - device_id: a794d4cc5fe7c2e7abd9b4480eb59ec8
+    domain: homekit_controller
+    type: button2
+    subtype: long_press
+    trigger: device
+    id: Long Press Button 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Toggle Day Curtain)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.master_day_curtain_toggle
+        data: {}
+    - conditions:
+      - alias: Button 1 Double Press (Toggle AC)
+        condition: trigger
+        id: Double Press Button 1
+      sequence:
+      - action: script.master_ac_toggle
+    - conditions:
+      - alias: Button 1 Long Press (Turn off all other lights)
+        condition: trigger
+        id: Long Press Button 1
+      sequence:
+      - action: script.all_lights_except_master_off
+        data: {}
+    - conditions:
+      - alias: Button 2 Single Press (Toggle Night Curtain)
+        condition: trigger
+        id: Single Press Button 2
+      sequence:
+      - action: script.master_night_curtain_toggle
+    - conditions:
+      - alias: Button 2 Double Press (Play Piano Music)
+        condition: trigger
+        id: Double Press Button 2
+      sequence:
+      - action: script.toggle
+        metadata: {}
+        target:
+          entity_id: script.spotify_peaceful_piano_on_bedroom
+        data: {}
+    - conditions:
+      - alias: Button 2 Long Press (Clean Bedroom)
+        condition: trigger
+        id: Long Press Button 2
+      sequence:
+      - action: script.system_dreame_clean_bedroom
+        metadata: {}
+        data: {}
+  mode: parallel
+  max: 10
+- id: '1762324822602'
+  alias: Master / Windows
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_windows
+    to: 'on'
+    id: Open
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_windows
+    to: 'off'
+    id: Closed
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Window Opened
+        condition: trigger
+        id: Open
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.master_day_curtain
+          state: closed
+        - condition: state
+          entity_id: cover.master_night_curtain
+          state: closed
+        then:
+        - service: script.master_curtains_open
+    - conditions:
+      - alias: Window Closed
+        condition: trigger
+        id: Closed
+      sequence:
+      - if:
+        - condition: state
+          entity_id: cover.master_day_curtain
+          state: open
+        then:
+        - service: script.master_day_curtain_close
+  mode: parallel
+  max: 10
+- id: '1762325023611'
+  alias: Master / Doors
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_door_sensor_3
+    to: 'on'
+    id: Open
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_door_sensor_3
+    to:
+    - 'on'
+    id: Idle
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_door_sensor_3
+    to: 'off'
+    id: Closed
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Door Opened
+        condition: trigger
+        id: Open
+      sequence:
+      - if:
+        - alias: It is not daytime
+          condition: state
+          entity_id: binary_sensor.is_daytime
+          state: 'off'
+        then:
+        - service: script.master_entrance_light_on
+    - conditions:
+      - alias: Door Closed
+        condition: trigger
+        id: Closed
+      sequence:
+      - delay: 3
+      - service: script.master_entrance_light_off
+    - conditions:
+      - alias: Door left open for 5 minutes
+        condition: trigger
+        id: Idle
+      sequence:
+      - service: script.master_entrance_light_off
+  mode: single
+- id: '1762325235687'
+  alias: Master / Air Purifier
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bedroom_air_purifier_6_mean
+    above: 10
+    id: 'On'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.bedroom_air_purifier_6_mean
+    id: 'Off'
+    below: 6
+  conditions:
+  - condition: state
+    entity_id: input_boolean.is_bed_time
+    state: 'off'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - action: fan.set_preset_mode
+        metadata: {}
+        target:
+          entity_id: fan.xiaomi_sg_2091397517_mb5_s_2_air_purifier
+        data:
+          preset_mode: Level
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - action: fan.set_preset_mode
+        metadata: {}
+        data:
+          preset_mode: Auto
+        target:
+          entity_id: fan.xiaomi_sg_2091397517_mb5_s_2_air_purifier
+  mode: single
+- id: '1762325301346'
+  alias: Guest / Air Purifier
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.guest_air_purifier_4_mean
+    above: 10
+    id: 'On'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.guest_air_purifier_4_mean
+    id: 'Off'
+    below: 6
+  conditions:
+  - condition: state
+    entity_id: input_boolean.is_bed_time
+    state: 'off'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'On'
+      sequence:
+      - device_id: c4a43f388fdc15eb04ffd3803812741e
+        domain: number
+        entity_id: a2d8c8c89c29d12e59d87df7f5e43f3b
+        type: set_value
+        value: 3
+    - conditions:
+      - condition: trigger
+        id:
+        - 'Off'
+      sequence:
+      - action: fan.set_preset_mode
+        metadata: {}
+        data:
+          preset_mode: Auto
+        target:
+          device_id:
+          - c4a43f388fdc15eb04ffd3803812741e
+  mode: single
+- id: '1762325892128'
+  alias: System / Bed Time
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.is_bed_time
+    to: 'on'
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - input_boolean.is_bed_time
+    to: 'off'
+    id: 'Off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Bed Time On
+        condition: trigger
+        id: 'On'
+      sequence:
+      - service: script.system_bed_time_on
+    - conditions:
+      - alias: Bed Time Off
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - service: script.system_bed_time_off
+  mode: single
+- id: '1762326733353'
+  alias: Kitchen / Presence
+  description: Turns kitchen lights on/off based on presence.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.kitchen_presence_sensor_fp2_presence_sensor_1
+    to: 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.kitchen_presence_sensor_fp2_presence_sensor_1
+    to: 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Detected and Lights Off
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: numeric_state
+          entity_id: sensor.kitchen_presence_sensor_fp2_light_sensor_light_level
+          below: 15
+          enabled: false
+        - condition: state
+          entity_id: light.all_kitchen_lights
+          state: 'off'
+      sequence:
+      - service: script.kitchen_all_lights_on
+    - conditions:
+      - alias: Not Detected for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.kitchen_all_lights_off
+  mode: parallel
+  max: 10
+- id: '1762326951534'
+  alias: Kitchen / Switches
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+    entity_id: 63b1535cdcb57884a06d5a78b66e219d
+    domain: switch
+    trigger: device
+    id: Switch 3 Off
+  - type: turned_on
+    device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+    entity_id: 63b1535cdcb57884a06d5a78b66e219d
+    domain: switch
+    trigger: device
+    id: Switch 3 On
+  - trigger: state
+    entity_id:
+    - input_boolean.kitchen_fan_toggle
+    to: 'on'
+    id: Fan Toggle On
+  - trigger: state
+    entity_id:
+    - input_boolean.kitchen_fan_toggle
+    to: 'off'
+    id: Fan Toggle Off
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Switch 3 Off
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.kitchen_fan_toggle
+    - conditions:
+      - condition: trigger
+        id:
+        - Switch 3 On
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.kitchen_fan_toggle
+    - conditions:
+      - condition: trigger
+        id:
+        - Fan Toggle On
+      sequence:
+      - if:
+        - condition: device
+          type: is_off
+          device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+          entity_id: 63b1535cdcb57884a06d5a78b66e219d
+          domain: switch
+        then:
+        - type: turn_on
+          device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+          entity_id: 63b1535cdcb57884a06d5a78b66e219d
+          domain: switch
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.kitchen_fan_osc
+    - conditions:
+      - condition: trigger
+        id:
+        - Fan Toggle Off
+      sequence:
+      - if:
+        - condition: device
+          type: is_on
+          device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+          entity_id: 63b1535cdcb57884a06d5a78b66e219d
+          domain: switch
+        then:
+        - type: turn_off
+          device_id: 52e1128eea64f8aa1f5285e4e357ddb7
+          entity_id: 63b1535cdcb57884a06d5a78b66e219d
+          domain: switch
+  mode: single
+- id: '1762328905073'
+  alias: Balcony / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor_3
+    id: Detected
+    to:
+    - 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_occupancy_sensor_3
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    to:
+    - 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Presence Detected
+        condition: trigger
+        id: Detected
+      sequence:
+      - if:
+        - alias: It is after sunset and before sunrise
+          condition: sun
+          before: sunrise
+          after: sunset
+        then:
+        - service: script.balcony_light_on
+    - conditions:
+      - alias: No Presence for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - service: script.balcony_light_off
+  mode: single
+- id: '1762329533028'
+  alias: Master / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_4
+    id: Bed Detected
+    to:
+    - 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_4
+    id: Bed Not Detected
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_8
+    id: Bed Walkway Detected
+    to:
+    - 'on'
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_8
+    id: Bed Walkway Not Detected
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_bedroom_entrance_presence
+    to: 'on'
+    id: Entrance Detected
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_bedroom_entrance_presence
+    to: 'off'
+    id: Entrance Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_toilet_entrance_sensor
+    id: Toilet Detected
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_toilet_entrance_sensor
+    to: 'off'
+    id: Toilet Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.master_presence_sensor_presence_sensor_1
+    to: 'off'
+    id: Generic Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_3
+    to: 'on'
+    id: Vanity Detected
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_3
+    to: 'off'
+    id: Vanity Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_7
+    id: Bathroom Walkway Detected
+    to: 'on'
+    enabled: true
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_7
+    id: Bathroom Walkway Not Detected
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_5
+    id: Wardrobe Detected
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_sensor_fp2_924b_presence_sensor_5
+    id: Wardrobe Not Detected
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Entrance Detected
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.master_downlight_r1
+    - conditions:
+      - condition: trigger
+        id:
+        - Entrance Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.master_downlight_r1
+    - conditions:
+      - condition: trigger
+        id:
+        - Toilet Detected
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.master_l1
+          - light.lightbulb_4
+    - conditions:
+      - condition: trigger
+        id:
+        - Toilet Not Detected
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.master_bathroom_presence
+          state:
+          - 'off'
+        then:
+        - action: light.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.master_l1
+            - light.lightbulb_4
+    - conditions:
+      - condition: trigger
+        id:
+        - Bathroom Walkway Detected
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.baby_in_master
+          state:
+          - 'on'
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.master_t2_3
+            - light.master_t2_4
+        else:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.master_downlights_r2
+    - conditions:
+      - condition: trigger
+        id:
+        - Bathroom Walkway Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.master_downlights_r2
+      - if:
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_924b_presence_sensor_5
+          state:
+          - 'off'
+        then:
+        - action: light.turn_off
+          metadata: {}
+          target:
+            entity_id: light.master_downlights_r3
+          data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Wardrobe Detected
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.baby_in_master
+          state:
+          - 'on'
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.master_t2_3
+            - light.master_t2_4
+        else:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.master_downlights_r3
+    - conditions:
+      - condition: trigger
+        id:
+        - Wardrobe Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.master_downlights_r3
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - Vanity Detected
+        - condition: state
+          entity_id: input_boolean.baby_in_master
+          state:
+          - 'off'
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.is_bed_time
+          state: 'on'
+        then:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.vanity_light_strip
+        else:
+        - action: light.turn_on
+          metadata: {}
+          data:
+            brightness_pct: 50
+          target:
+            entity_id: light.vanity_light_strip
+      alias: If triggered by Vanity Detected and No Baby
+    - conditions:
+      - condition: trigger
+        id:
+        - Vanity Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.vanity_light_strip
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - Bed Detected
+        - condition: state
+          entity_id: input_boolean.is_bed_time
+          state: 'off'
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.master_downlights_r5
+      alias: Triggered by Bed Detected and Bed Time Off
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - Bed Walkway Detected
+        - condition: state
+          state:
+          - 'off'
+          entity_id: input_boolean.is_bed_time
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.baby_in_master
+          state:
+          - 'on'
+        then: []
+        else:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - light.master_downlights_r4
+      alias: Triggered by Bed Walkway Detected
+    - conditions:
+      - condition: trigger
+        id:
+        - Bed Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.master_downlights_r5
+    - conditions:
+      - condition: trigger
+        id:
+        - Bed Walkway Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.master_downlights_r4
+    - conditions:
+      - condition: trigger
+        id:
+        - Generic Not Detected
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.all_master_bedroom_lights
+  mode: parallel
+  max: 10
+- id: '1762345692511'
+  alias: System / Movie Mode
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.plexapp.android
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.disney.disneyplus
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.netflix.ninja
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.iqiyi.i18n.tv
+    id: 'On'
+  - trigger: template
+    value_template: '{{ state_attr(''media_player.living_room_tv'', ''media_title'')
+      is search(''PlayStation 5'', ignorecase=True) }}'
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.sony.dtv.tvx
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.google.android.youtube.tv
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.spotify.tv.android
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    attribute: app_name
+    to: com.google.android.apps.tv.launcherx
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - media_player.bravia_4k_vh22
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - media_player.living_room_tv
+    to: 'off'
+    id: 'Off'
+  - trigger: state
+    entity_id:
+    - input_boolean.gaming_mode
+    to:
+    - 'on'
+    from:
+    - 'off'
+    id: 'On'
+  - trigger: state
+    entity_id:
+    - input_boolean.gaming_mode
+    id: 'Off'
+    from:
+    - 'on'
+    - 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Movie App or Gaming Mode On
+        condition: trigger
+        id: 'On'
+      sequence:
+      - service: script.movie_mode_on
+    - conditions:
+      - alias: Movie App or Gaming Mode Off
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - service: script.movie_mode_off
+  mode: queued
+  max: 10
+- id: '1762346345987'
+  alias: Master / AC Humidity
+  description: Turns on dry mode when humidity is high, and back to cool mode when
+    it's normal or after 1.5 hours.
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.master_temperature_sensor_humidity_sensor_3
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    above: 80
+    id: High Humidity (Detected)
+  - device_id: 8960a0764affd323f6532e62a21b57c6
+    domain: climate
+    entity_id: 6b161eba30356e1b4e1de24aa3b28b0b
+    type: hvac_mode_changed
+    trigger: device
+    to: dry
+    for:
+      hours: 1
+      minutes: 30
+      seconds: 0
+    id: Dry Mode (1.5H)
+  - trigger: numeric_state
+    entity_id:
+    - sensor.master_temperature_sensor_humidity_sensor_3
+    id: Target Humidity Achieved
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    below: 60
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Humidity is high
+        condition: trigger
+        id: High Humidity (Detected)
+      sequence:
+      - service: script.master_ac_dry_mode
+    - conditions:
+      - alias: Dry mode has been on for 1.5 hours
+        condition: trigger
+        id: Dry Mode (1.5H)
+      sequence:
+      - service: script.master_ac_cool_mode
+    - conditions:
+      - alias: Target humidity has been achieved
+        condition: trigger
+        id: Target Humidity Achieved
+      sequence:
+      - if:
+        - alias: AC is currently in drying mode
+          condition: state
+          entity_id: climate.master_daikin_ac
+          attribute: hvac_action
+          state: drying
+        then:
+        - service: script.master_ac_cool_mode
+  mode: single
+- id: '1762481347634'
+  alias: Foyer/ Doorbell
+  description: ''
+  triggers:
+  - device_id: 6a305642c8d835c86d719139d80856ee
+    domain: homekit_controller
+    type: doorbell
+    subtype: single_press
+    trigger: device
+    id: Doorbell
+  - type: motion
+    device_id: 6a305642c8d835c86d719139d80856ee
+    entity_id: 47ed030731070e567dcd97c8fd54da4e
+    domain: binary_sensor
+    trigger: device
+    id: Front Door Motion
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Doorbell Pressed
+        condition: trigger
+        id: Doorbell
+      sequence:
+      - service: script.foyer_doorbell_ring_actions
+    - conditions:
+      - alias: Motion at Front Door
+        condition: trigger
+        id: Front Door Motion
+      sequence:
+      - service: script.foyer_doorbell_motion_actions
+  mode: parallel
+  max: 10
+- id: '1762485261804'
+  alias: System / Scheduled Mop and Vacuum
+  description: ''
+  triggers:
+  - trigger: time
+    at: '12:00:00'
+    weekday:
+    - tue
+    - thu
+    - sat
+  - trigger: time
+    at: '14:00:00'
+    weekday:
+    - tue
+    - thu
+    - sat
+  - trigger: time
+    at: '16:00:00'
+    weekday:
+    - tue
+    - thu
+    - sat
+  conditions:
+  - condition: state
+    entity_id: input_boolean.floors_cleaned
+    state:
+    - 'off'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.at_home_indicator
+      state:
+      - 'off'
+      for:
+        hours: 1
+        minutes: 0
+        seconds: 0
+    - condition: state
+      entity_id: input_boolean.force_clean
+      state:
+      - 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'on'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_everywhere
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Bedroom / Guest / Study and Rest of the House
+      alias: Master / Guest / Study Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'on'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_guest_room_and_study_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Guest / Study and Rest of the House
+      alias: Guest / Study Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'off'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_bedroom_and_guest_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Bedroom / Guest and Rest of the House
+      alias: Master / Guest Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'on'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_bedroom_and_study_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Bedroom / Study and Rest of the House
+      alias: Master / Study Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'off'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_bedroom_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Bedroom and Rest of the House
+      alias: Master Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'on'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_study_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Study and Rest of the House
+      alias: Study Open
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.master_door_sensor_3
+          state:
+          - 'off'
+        - condition: state
+          entity_id: binary_sensor.guest_door_sensor_2
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.contact_sensor
+          state:
+          - 'off'
+      sequence:
+      - action: script.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: script.clean_guest_and_outside
+      - action: notify.mobile_app_pixel_9_pro_xl
+        metadata: {}
+        data:
+          title: Daily Cleaning
+          message: Cleaning Guest and Rest of the House
+      alias: Guest Open
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.floors_cleaned
+  mode: single
+- id: '1762741086411'
+  alias: Service Yard / Pet Motion
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.service_yard_motion_sensor
+    to:
+    - 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.service_yard_motion_sensor
+    to:
+    - 'on'
+    id: Detected
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: No Motion for 1 Minute
+        condition: trigger
+        id: Not Detected
+      sequence:
+      - if:
+        - alias: No motion in kitchen and lights are on
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.kitchen_motion_sensor
+            state: 'off'
+          - condition: state
+            entity_id: light.service_yard_l1
+            state: 'on'
+        then:
+        - service: script.service_yard_pet_lights_off
+    - conditions:
+      - alias: Motion Detected
+        condition: trigger
+        id: Detected
+      sequence:
+      - choose:
+        - conditions:
+          - alias: It is midnight or bed time
+            condition: or
+            conditions:
+            - condition: state
+              entity_id: binary_sensor.is_midnight
+              state: 'on'
+            - condition: state
+              entity_id: input_boolean.is_bed_time
+              state: 'on'
+          sequence:
+          - if:
+            - condition: state
+              entity_id: light.service_yard_l1
+              state: 'off'
+            then:
+            - service: script.service_yard_light_on
+        - conditions:
+          - alias: It is not daytime
+            condition: state
+            entity_id: binary_sensor.is_daytime
+            state: 'off'
+          sequence:
+          - service: script.service_yard_hub_light_on
+  mode: single
+- id: '1766848221974'
+  alias: Guest / Presence
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_presence_sensor_fp2_presence_sensor_1
+    to:
+    - 'on'
+    id: Detected
+  - trigger: state
+    entity_id:
+    - binary_sensor.guest_presence_sensor_fp2_presence_sensor_1
+    to:
+    - 'off'
+    id: Not Detected
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Presence Detected and Guest Mode is On
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Detected
+        - condition: state
+          entity_id: input_boolean.has_guest
+          state: 'on'
+      sequence:
+      - service: script.guest_downlights_on
+    - conditions:
+      - alias: No Presence for 1 Minute and Guest Mode is On
+        condition: and
+        conditions:
+        - condition: trigger
+          id: Not Detected
+        - condition: state
+          entity_id: input_boolean.has_guest
+          state: 'on'
+      sequence:
+      - if:
+        - alias: Lights are on
+          condition: state
+          entity_id: light.all_guest_downlights
+          state: 'on'
+        then:
+        - service: script.guest_downlights_off
+  mode: queued
+  max: 10
+- id: '1769699040566'
+  alias: System  / Sonos Roam 2 Battery Monitoring
+  description: ''
+  triggers:
+  - type: charging
+    device_id: 22e057c344b8061b3e32515e39c501b0
+    entity_id: 0edc67b9981dc9acac66e41ca827c3ca
+    domain: binary_sensor
+    trigger: device
+    id: Roam 2 Charged
+  - trigger: numeric_state
+    entity_id:
+    - sensor.roam_2_battery
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 20
+    id: Roam 2 Battery Low
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Roam 2 Charged
+      sequence:
+      - data:
+          message: clear_notification
+          data:
+            tag: sonos-roam-battery-alert
+        action: notify.mobile_app_pixel_10_pro_xl
+    - conditions:
+      - condition: trigger
+        id:
+        - Roam 2 Battery Low
+      sequence:
+      - data:
+          message: Please connected it to a charger
+          title: Sonos Roam 2 Battery Low
+          data:
+            tag: sonos-roam-battery-alert
+        action: notify.mobile_app_pixel_10_pro_xl
+  mode: single
+- id: '1773853347487'
+  alias: Master / Dehumidifier Auto Off
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: "{{ \n  states('sensor.master_temperature_sensor_humidity_sensor_3')
+      | int(0) <= state_attr('humidifier.dmaker_sg_975646016_22ht', 'humidity') |
+      int(0)\n  and \n  states('sensor.master_bathroom_humidity_sensor_2') | int(0)
+      <= state_attr('humidifier.dmaker_sg_975646016_22ht', 'humidity') | int(0)\n}}"
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  conditions:
+  - condition: state
+    entity_id: humidifier.dmaker_sg_975646016_22ht
+    state:
+    - 'on'
+  actions:
+  - type: turn_off
+    device_id: 596a619ebe22935a50f9ae15c2f43b5f
+    entity_id: 43412518ab635acd4715052ebb7b9e11
+    domain: humidifier
+  mode: single
+- id: '1773982917675'
+  alias: 'System / Maintenance Mode '
+  description: 'Updates brightness of lights that are on when maintenance mode toggled
+    on / off
+
+    '
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.is_maintenance_mode
+    from:
+    - 'off'
+    to:
+    - 'on'
+    id: 'on'
+  - trigger: state
+    entity_id:
+    - input_boolean.is_maintenance_mode
+    id: 'off'
+    from:
+    - 'on'
+    to:
+    - 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Maintenance Mode Turned On
+        condition: trigger
+        id: 'on'
+      sequence:
+      - action: script.system_maintenance_mode_on
+    - conditions:
+      - alias: Maintenance Mode Turned Off
+        condition: trigger
+        id: 'off'
+      sequence:
+      - action: script.system_maintenance_mode_off
+  mode: parallel
+  max: 2
+- id: '1773984141056'
+  alias: System / Light On after Maintenance Mode On
+  description: Update brightness of lights for lights that are turned on subsequently
+    after maintenance mode is on
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.foyer_downlight
+    - light.foyer_light_strip
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.kitchen_downlights
+    - light.kitchen_light_strip
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.service_yard_l1
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.all_dining_lights
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.living_downlights_r2
+    - light.living_downlights_r3
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.living_downlights_r1
+    - light.all_hallway_downlights
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.all_study_downlights
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.guest_t2_1
+    - light.guest_t2_2
+    - light.guest_t2_3
+    - light.lightbulb_2
+    - light.guest_t2_5
+    - light.guest_t2_6
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.vanity_light_strip
+    - light.master_light_strip
+    - light.master_t1
+    - light.master_t2_1
+    - light.master_t2_2
+    - light.master_t2_3
+    - light.master_t2_4
+    - light.mnaster_t2_5
+    - light.master_t2_6
+    - light.master_t2_7
+    - light.master_t2_8
+    - light.master_t2_9
+    - light.master_t2_10
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.bathroom_l1
+    - light.lightbulb_3
+    to:
+    - 'on'
+    from:
+    - 'off'
+  - trigger: state
+    entity_id:
+    - light.master_l1
+    - light.lightbulb_4
+    to:
+    - 'on'
+    from:
+    - 'off'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.is_maintenance_mode
+    state:
+    - 'on'
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+    data:
+      brightness_pct: '{{ states(''input_number.maintenance_mode_brightness_level'')
+        }}'
+  mode: parallel
+  max: 20
+- id: '1774150493423'
+  alias: Study / Work Mode
+  description: Manages Work Mode, Color Adaptation, and Sleep Mode Overrides
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.work_mode_status
+  - trigger: time
+    at: 09:00:00
+  - trigger: time
+    at: '18:00:00'
+  - trigger: state
+    entity_id:
+    - light.all_study_downlights
+    - light.study_light_bar
+  actions:
+  - choose:
+    - conditions:
+      - alias: Work Mode is On
+        condition: state
+        entity_id: binary_sensor.work_mode_status
+        state: 'on'
+      sequence:
+      - action: script.study_enter_work_mode
+    - conditions:
+      - alias: Work Mode is Off
+        condition: state
+        entity_id: binary_sensor.work_mode_status
+        state: 'off'
+      sequence:
+      - action: script.study_exit_work_mode
+  mode: parallel
+  max: 10
+- id: '1774238055325'
+  alias: System / Gaming Mode
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.living_s1_current_consumption
+    above: 30
+    id: 'On'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.living_s1_current_consumption
+    id: 'Off'
+    below: 2
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Gaming Power Detected
+        condition: trigger
+        id: 'On'
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.gaming_mode
+    - conditions:
+      - alias: No Gaming Power Detected
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.gaming_mode
+  mode: single
+- id: '1776521640862'
+  alias: System / Washer and Dryer Counter
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.washer_operating_state
+    from:
+    - 'off'
+    - 'on'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    id: Washer On
+  - trigger: state
+    entity_id:
+    - binary_sensor.dryer_operating_state
+    from:
+    - 'off'
+    - 'on'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    id: Dryer On
+  - trigger: time
+    at: 00:00:00
+    id: Reset Counters
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Dryer On
+      sequence:
+      - action: counter.increment
+        metadata: {}
+        target:
+          entity_id: counter.dryer_counter
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Washer On
+      sequence:
+      - action: counter.increment
+        metadata: {}
+        target:
+          entity_id: counter.washer_counter
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Reset Counters
+      sequence:
+      - action: counter.reset
+        metadata: {}
+        target:
+          entity_id:
+          - counter.dryer_counter
+          - counter.washer_counter
+        data: {}
+  mode: single
+- id: '1777127020316'
+  alias: Living Room / S1 Plus Wireless Button
+  description: ''
+  triggers:
+  - trigger: event.received
+    target:
+      entity_id: event.living_magic_pad_s1_plus_button1
+    options:
+      event_type:
+      - single_press
+    id: Button 1
+  - trigger: event.received
+    target:
+      entity_id:
+      - event.living_magic_pad_s1_plus_button2
+    options:
+      event_type:
+      - single_press
+    id: Button 2
+  - trigger: event.received
+    target:
+      entity_id:
+      - event.living_magic_pad_s1_plus_button3
+    options:
+      event_type:
+      - single_press
+    id: Button 3
+  - trigger: event.received
+    target:
+      entity_id:
+      - event.living_magic_pad_s1_plus_button4
+    options:
+      event_type:
+      - single_press
+    id: Button 4
+  - trigger: event.received
+    target:
+      entity_id: event.living_magic_pad_s1_plus_button5
+    options:
+      event_type:
+      - single_press
+    id: Button 5
+  - trigger: event.received
+    target:
+      entity_id: event.living_magic_pad_s1_plus_button6
+    options:
+      event_type:
+      - single_press
+    id: Button 6
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 1
+      sequence:
+      - action: script.spotify_jazz_in_living_room
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 2
+      sequence:
+      - action: script.spotify_mandopop_in_living_room
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 3
+      sequence:
+      - action: script.system_clean_living_room
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 4
+      sequence:
+      - action: script.spotify_pop_in_living_room
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 5
+      sequence:
+      - if:
+        - condition: media_player.is_playing
+          target:
+            device_id: 20c7ac0873ebbacdde24e657e3ae6e83
+          options:
+            behavior: any
+        then:
+        - action: media_player.media_stop
+          metadata: {}
+          target:
+            device_id: 20c7ac0873ebbacdde24e657e3ae6e83
+          data: {}
+      - if:
+        - condition: media_player.is_playing
+          target:
+            device_id:
+            - 6ce5e4c8b9545da89d836e506f2880c0
+          options:
+            behavior: any
+        then:
+        - action: media_player.media_stop
+          metadata: {}
+          target:
+            device_id: 6ce5e4c8b9545da89d836e506f2880c0
+          data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Button 6
+      sequence:
+      - action: script.system_stop_media
+        metadata: {}
+        data: {}
+  mode: single
+- id: '1777429877938'
+  alias: Study / S1E Wireless Button
+  description: ''
+  triggers:
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button3
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 3
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button4
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 4
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button6
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 6
+  - device_id: 1e8077c643ee712acb2079272301e67f
+    domain: homekit_controller
+    type: button5
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 5
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Clean Room)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.system_dreame_clean_study
+        metadata: {}
+        data: {}
+    - conditions:
+      - alias: Button 2 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 2
+      sequence: []
+    - conditions:
+      - alias: Button 3 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 3
+      sequence: []
+    - conditions:
+      - alias: Button 4 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 4
+      sequence: []
+    - conditions:
+      - alias: Button 5 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 5
+      sequence: []
+    - conditions:
+      - alias: Button 6 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 6
+      sequence: []
+  mode: parallel
+  max: 10
+- id: '1777430076983'
+  alias: Guest / S1E Wireless Button
+  description: ''
+  triggers:
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button3
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 3
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button4
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 4
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button5
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 6
+  - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
+    domain: homekit_controller
+    type: button6
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 5
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Clean Room)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.system_dreame_clean_guest
+        metadata: {}
+        data: {}
+    - conditions:
+      - alias: Button 2 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 2
+      sequence: []
+    - conditions:
+      - alias: Button 3 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 3
+      sequence: []
+    - conditions:
+      - alias: Button 4 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 4
+      sequence: []
+    - conditions:
+      - alias: Button 5 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 5
+      sequence: []
+    - conditions:
+      - alias: Button 6 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 6
+      sequence: []
+  mode: parallel
+  max: 10
+- id: '1777430162342'
+  alias: Master / S1E Wireless Button
+  description: ''
+  triggers:
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 1
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button2
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 2
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button3
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 3
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button4
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 4
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button5
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 6
+  - device_id: 2ef4952bd38264bb1322d28188056a85
+    domain: homekit_controller
+    type: button6
+    subtype: single_press
+    trigger: device
+    id: Single Press Button 5
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: Button 1 Single Press (Clean Room)
+        condition: trigger
+        id: Single Press Button 1
+      sequence:
+      - action: script.system_dreame_clean_bedroom
+        metadata: {}
+        data: {}
+    - conditions:
+      - alias: Button 2 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 2
+      sequence: []
+    - conditions:
+      - alias: Button 3 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 3
+      sequence: []
+    - conditions:
+      - alias: Button 4 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 4
+      sequence: []
+    - conditions:
+      - alias: Button 5 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 5
+      sequence: []
+    - conditions:
+      - alias: Button 6 Single Press (Unassigned)
+        condition: trigger
+        id: Single Press Button 6
+      sequence: []
+  mode: parallel
+  max: 10
+- id: system_vacuum_auto_update_last_cleaned
+  alias: System / Vacuum Auto Update Last Cleaned
+  description: Automatically updates last cleaned time when the vacuum is cleaning
+    a room
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.dreame_x40_ultra_current_room
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - vacuum.dreame_x40_ultra
+    attribute: status
+    to:
+    - Cleaning
+    - Room cleaning
+    - Segment cleaning
+    - Zone cleaning
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions:
+  - condition: template
+    value_template: '{{ state_attr(''vacuum.dreame_x40_ultra'', ''status'') in [''Cleaning'',
+      ''Room cleaning'', ''Segment cleaning'', ''Zone cleaning''] }}'
+  - condition: template
+    value_template: '{{ state_attr(''vacuum.dreame_x40_ultra'', ''current_segment'')
+      is not none }}'
+  actions:
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - '{{ state_attr(''vacuum.dreame_x40_ultra'', ''current_segment'') }}'
+  mode: single

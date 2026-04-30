@@ -1,0 +1,41 @@
+# Home Assistant configuration
+secrets.yaml
+
+# Home Assistant database and logs
+home-assistant_v2.db
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
+home-assistant.log
+*.log.*
+
+.ssh/
+.storage/*
+.cloud/
+__pycache__/
+
+# unused folders
+.agents/
+.cache/
+esphome/
+www/
+ui_lovelace_minimalist/
+themes/
+image/
+blueprints/
+
+.ha_run.lock
+ip_bans.yaml
+
+custom_components/
+/zigbee2mqtt/*
+/zigbee2mqtt/log
+/zigbee2mqtt/state.json
+zigbee.db
+
+sample/*
+manual_backup/*
+
+.DS_Store
+
+# Whitelist
+!.storage/lovelace

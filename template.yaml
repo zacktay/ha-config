@@ -1,0 +1,50 @@
+- trigger:
+    - platform: state
+      entity_id: input_boolean.manual_work_mode
+    - platform: time
+      at: "00:00:01"
+    - platform: event
+      event_type: "event_template_reloaded"
+    - platform: homeassistant
+      event: start
+  action:
+    - action: calendar.get_events
+      data:
+        start_date_time: "{{ today_at('00:00:00') }}"
+        end_date_time: "{{ today_at('23:59:59') }}"
+      target:
+        entity_id: calendar.tayguangwei_gmail_com
+      response_variable: agenda
+  binary_sensor:
+    - name: "Work Mode"
+      unique_id: work_mode_status
+      state: >
+        {% set is_workday = is_state('binary_sensor.workday_sensor', 'on') %}
+        {% set events = agenda.get('calendar.tayguangwei_gmail_com', {}).get('events', []) %}
+        {% set on_leave = events | selectattr('summary', 'search', 'Leave', ignorecase=True) | list | count > 0 %}
+        {% set manual_override = is_state('input_boolean.manual_work_mode', 'on') %}
+        {{ (is_workday and not on_leave) or manual_override }}
+      icon: >
+        {{ 'mdi:briefcase-alert' if is_state('input_boolean.manual_work_mode', 'on') else 'mdi:briefcase' }}
+- trigger:
+    - platform: state
+      entity_id: sensor.9d41000035d6f4ddba60e7bd8dc491c0_57449_15150_area
+      for: "00:00:10" 
+  sensor:
+    - name: "Fudge Filtered Location"
+      unique_id: fudge_filtered_location
+      icon: mdi:cat
+      state: "{{ trigger.to_state.state if trigger.to_state is not none else 'Unknown' }}"
+      attributes:
+        last_stable_update: "{{ now() }}"
+- trigger:
+    - platform: state
+      entity_id: sensor.bermuda_f0_fd_1b_18_52_1d_area
+      for: "00:00:10" 
+  sensor:
+    - name: "Taffy Filtered Location"
+      unique_id: taffy_filtered_location
+      icon: mdi:cat
+      state: "{{ trigger.to_state.state if trigger.to_state is not none else 'Unknown' }}"
+      attributes:
+        last_stable_update: "{{ now() }}"

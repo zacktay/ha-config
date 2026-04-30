@@ -1,0 +1,1934 @@
+kitchen_fan_osc:
+  sequence:
+  - action: remote.send_command
+    target:
+      entity_id: remote.rm4_pro
+    data:
+      command: b64:scCvBOyeBgATDRcNFw0XDRcNFwwYDBgYDAwYDBgLGBgMDBgYDAwYDBcYDBgLGQsNFxkLDBcZCwABSRgMGAwYDBgMGAwXDBgMGAwYGAwMFwwYDBgYDAwYGAwMFwwYGAwYDBgMDBcYDAwYGAwAAUgYCxkMGAwYCxgMGAwYDBgMGBgLDBgMGAwYGAwMGBcMDBgMGBgMGAwXDAwYGAwMGBgMAAFIGAwYDBgLGAwYDBgMGAwYDBcYDAwYDBgMGBgLDBgYDAwYDBgYDBcMGAwMGBgMDBgYCwABSBkLGAsZCxkMGAwYDBgLGAwYGAwMGAwYDBcYDAwYGAwMGAwXGAwYDBgLDRcZCw0XGAsAAUkXDBgMGQsZCxkLGAsZDBgMGBgMDBgLGAwYGAwMGBgLDRYNGBgLGQsYDAwYGAsMGBgMAAFIGAwZCxgMGAwXDBgMGAwYDBgZCwsYDBgNGBgLDRcYCw0XDRcZCxgMGAsMGBgMDBgYDAABSBgMGAwYCxgMGAwYDBgMGAwXGAwMGAwYDRcZCwsYGQsMGAwYGQsXDBgMDBgYDAwYGAwKlQABSBgMGQsZChkMGAwYDBgMGAwXGAwMGAwYDBgYCwwYGAwMGAwYGAwXDBgMDBgYDAwYGAsAAUgZCxgLGQsZDBgMGAwYCxgMGBgMDBgMGAwXGAwMGBgMDBgMFxgMGAwYDAwYGAwMFhkLAAFKFwwYDBgMGAwYDBcMGAwYDBgYDAwYCxgMGBgMDBgYDAwXDBgYDBgMGAwMGBcMDBgYDAABRxkMGAwYDBgMFwwYDBgMGAwYGQsLGAwYDBgZCw4WFwwMGAwYGAwYDBgLDBgYDAwYGAwAAUgYDBgMGAsYDBgMGAwYDBgMFxgMDBgNFw0YGAsMFxkLDRcNFxkLGAsYDAwYGAwMGBgMAAFIGAwYCxgMGAwYDBgMGAwYCxkYCwwYDRcNFhkLDBgZCwwYDRcYCxgMGAwMGBgMDBcYDAABSRcMGAwYDBgMGAwYCxkLGAwYGAwMGA0WDRcZCw0XGQsNFwwXGQsYDBgMDBgXDAwYGAwAAUgYDBgMGAwYDBcMGAwYDBgMGBgMCxgMGAwYGQsMGBgLDBgMGBkLGAwYDAsYGAwMGBgMDJEAAUgYDBgMGAwYDBcMGAwYDBgNGBgLCxkMGAwYGAwMGBcMCxkMGBgLGAwYCwwYGAwMGRcMAAFIGAwYDBgMFwwYDBgMGAwZDBcYDAwYDBgMFxkLDBcZCw0XDRcZCxgLGQsMGBgMDBgYDAABSBgMGAsZCxkLGQsZDBgMFwwYGAwMGAwYDBcYDAwYGAwMGAwYFwwYDBgMDBgXDQsYFw0AAUkXDBgMGAwYDBgMGAsYDBgMGBgMDBgMFwwYGQsMGBgMDBgLGBgMGAwYDAwYFwwMGBgMAAFIGAwYDBgMGAwXDBgMGAwYDBgZCwwXDBgNGBgLDBkYCgwYDRcZCxgMGAwLGBgMDBgYDAABSBkLGAwZCxgLGQsYDBkLGQwYFwwMGAwYDBgYDAwWGQsNFw0YGAwYChkLDBgZCwwYGAwAAUgYDBkLGAsZCxkLGQsZDBcMGBgLDRcNGAwYFwwMGBgMDBgMGBcMGAwYDAsZFw0LGRYN
+  alias: Kitchen / Set Fan Speed 1
+  description: ''
+kitchen_toggle_fan_power:
+  alias: Kitchen / Toggle Fan Power
+  sequence:
+  - action: remote.send_command
+    target:
+      entity_id: remote.rm4_pro
+    data:
+      command: b64:scCvBIieBgAXDBgMGAwYDBgMGAsYDBkXDQsYGA0LFxgMDBgYDAwYDBgXDAwYGAwMGBgMDBcYDAABSRgLGAwYDBgMGAwYDBcNFw0YGAwLGRgLCxgYDAwYGAwMGAwXGAwMGBgMDBgYDAwXGAwAAUkXDBgMGAwYDBkLGQoZCxkMGBgLDRgYCgwYGAwMGBgMDBgMFxgMDBgYDAwYGAwLGBgMAAFIGAwYDBgMGAwYDBgLGQsZDBgYDAsZFgwMGBgMDBgYDAwYCxgYDAwYGAwMGBcMDBgYDAABSBgMGAwYDBgMGAwXDBkLGQwYGAwLGBgLDBgYDAwYGAwMFwwYGQsMGBgMDBgXDAwYGAwAAUgYDBgMGAwYDBgLGQsZCxkMGBgMDBcXDQsZFwwMGBgMCxgMGBgMDBgYDAwXGAwMGBgMAAFIGAwYDBgMGAwXDBgMGQsZDBgYDAsYFw0LGRgLDBgXDAwYDBgYDAwYGAwLGBgMDBgYDAABSBgMGAwZCxkKGQsZDBgMGAwYFwwMGBgMCxkXDQsZFwsMGQsYGAwMGBgLDBgYDAwYGAwMkAABSBkLGQsZCxkMFwwYDBgMGAwYGAwMFxgMDBgYDAwYGAsMFw0YGAsNGBgMCxgYCwwYGAwAAUgYDBkLGAwYDBcMGAwYDBkLGBkKDBgYDAwYGAwMGBcMDBgMGBgMDBgYDAsYGAwMGBgMAAFHGQwYDBgMFwwYDBgMGAwYDBgXDAwYGAwMGBgMDBgXDAwYDBgYDAwYFwwMGBgMDBgYDAABRxgMGAwZCxgLGQsZCxkMGAwYFwwMGBgMDBgYCw0WGQsMGAwZGAsMGRYMDBgYDAwYGAwAAUgYDBgMGAsZCxkLGQsZDBgMFxgMDBgYDAwYGAsMFxkLDBkLGBgMDBcYDAwYGAwMGBgMAAFIGAwYDBcMGAwYDBgMGQsZCxgYCwwYGAwMGBgLDBgYDAwYDBgYDAsYGAwMGBgMDBgYCwABSRgMGAsYDBgMGAwYDBgMFwwZFwwMGBgMDBgXDAwYGAwMGAwYGAsMGBgMDBgYDAwYFwwAAUgZCxgLGQsZDBgMGAwYCxgMGBgMDBgYDAwXGAwMGBgMDBgMGBcMDBgYDAwYGAwMGBcMC5kAAUgYDBgLGAwYDBgMGAwYDBcMGBgMDBgYDAwYFwwMGBgMDBgMGBgMCxgYDAwYGAsNGBcMAAFJGAwXCxkLGQwYDBgMGAwXDBgYDAwYGAwMFxgMDBgYDAwYDBgXDAwYGAwMGBgMDBgXDAABSRgMFwsZDBgMGAwYDBcMGAwYGAwMGBgMDBcYDAwYGAwMGAwYFwwMGBgMDBgYDAwXGAwAAUkXDBgMGAsZDBgMGAwXDBgMGBgMDBgYDAsYGAwMGBgMDBgMFxgMDBgYDAwYGAwKGRgLAAFKFwwYCxkLGQsZDBgLGAwYDBgYDAwYFwwMGBgMDBgYDAwYCxgYDAwYGAwMGBgKDRgYCwABSBkMGAsZDBgLGQwXDBgMGAwYGAwMGBcMDBgYDAwYGAwMFwwYGAwMGBgMDBgXDAwYGAwAAUgYDBgMGAwYDBgLGAwYDBgMGBgMDBcYDAwYGAwMGBgMCxgMGBgMDBgYDAwXGAwMGBgM
+  description: ''
+kitchen_set_fan_osc:
+  alias: Kitchen / Set Fan Osc
+  sequence:
+  - action: remote.send_command
+    target:
+      entity_id: remote.rm4_pro
+    data:
+      command: b64:scCoAQqfBgAYDBgMGA0VDggMBA0XDRcNFxkLGAsYDAwYGAwMGBgMDBcMGA0XDRcZCw0XGAsMGBkLAAFIFw0YDBgMGAwYDBgLGAwYDBgZCxgMGAsMGBgMDBgYDAwYDBcMGAwYGAwMGBgMDBcYDAABSRgMFwwYDBgMGA0YDBgMFwwYGAwYDBgMCxkWDQsZFwwMGA0XDRcMGBgLDBkYCwwZFwsAAUoXDRcNFwwYDBgMGAwYDBgMFxgMGAwYDAwYGAwMFxgMDBcNGAwYDBgXDAwYGAwMGBgMAAFIGAwYDBgMGAsYDBgMGAwYDRcZCxcMGAwMGBgMDBgYCwwYDBgMGAwYGAwMFxgMDBgYDAABSBgMGAwYDBkLGQsYDBgMGAwYGAwYDBcMDBgYCw0YGAsNFwwYDBgMGBgMDBgYDAsYGAwAAUkYCxgMGAwYDBgMGAwXDBgMGBkLGAwYDAwXGAwMGBgMDBgMGAwXDBgZCwwYGAwMGBcMAAFJGAwYDBgLGQsZDBgMGAwYCxgYDBgMGAwMGBgMCxgYDAwYDBgMGAwXGAwMGBgMDBgYDAwAAS4ABdw=
+  description: ''
+kitchen_set_fan_speed_2:
+  alias: Kitchen / Set Fan Speed 2
+  sequence:
+  - action: remote.send_command
+    target:
+      entity_id: remote.rm4_pro
+    data:
+      command: b64:scCmAeyeBgAXDRcNFw0YDBcMGAwYDBgMGAwYCxgMGBgMDBgYDAsYGAwYDBgLGQsNFhkLDRcZCwABSBgMGAwZChkLGQsZCxkMGAsYDBgMGAwYDBgXDAwYGAwMGBgMFwwYDBcMDBkXDAwXGAwAAUgYDBgMGAwYDBgMFwwZDBgMGAwYDBcMGAwYGAwMGBgLDBgYDBgLGQsYCwwYGAwMGBgMAAFIGAwYDBcMGQsYDBgMGAwXDBgNFw0XDRgMFxgMDBgYDAwYGAwXCxgMGAwMGBgMCxgYDAABSBgMGAwYDBgMFwwZCxkMGAwYDBgLGAwYDBgYDAwYFwwMGBgMGAwYDBYMDBgYDAwYGAwAAUgYDBgLGAwZCxkLGQsZCxgMGAwYDBgMGAwXGAwMGBgMDBgXDBgMGAwYDAwYGAsMGBgMAAFHGQsZCxkLGQwXDBgMGAwYDBgMFwwYDBgMGBgMDBcYDAwYGAwYDBgLGAwLGRgLDRgXDAABSBkLGAwYDBgMGAwYDBcMGAwYDBgMGA0WDRcZCwwYGQsNFxgLGAwYDBgMDBgXDAwYGAwLAAEwAAXc
+  description: ''
+turn_on_ionizer:
+  sequence:
+  - type: turn_on
+    device_id: ff5481c3a3473e72362a0daadb21471d
+    entity_id: cd00df3151145189561511335b39538a
+    domain: switch
+  - type: turn_on
+    device_id: 7663297a8476c938a57e7df6b9786c73
+    entity_id: 25a10e35a86443cc73c587f7c38adf71
+    domain: switch
+  - type: turn_on
+    device_id: c4a43f388fdc15eb04ffd3803812741e
+    entity_id: ca2e7ff07492908f67e3b2bd9c4fb169
+    domain: switch
+  - type: turn_on
+    device_id: 3754512bf322550961e32ad044ea30ae
+    entity_id: 9669770fab1b1a75bf0190f3f7b9680f
+    domain: switch
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.xiaomi_sg_2091397517_mb5_anion_p_2_6
+    data: {}
+  alias: System / Turn On Ionizer
+  description: ''
+turn_off_ionizer:
+  sequence:
+  - type: turn_off
+    device_id: ff5481c3a3473e72362a0daadb21471d
+    entity_id: cd00df3151145189561511335b39538a
+    domain: switch
+  - type: turn_off
+    device_id: 7663297a8476c938a57e7df6b9786c73
+    entity_id: 25a10e35a86443cc73c587f7c38adf71
+    domain: switch
+  - type: turn_off
+    device_id: c4a43f388fdc15eb04ffd3803812741e
+    entity_id: ca2e7ff07492908f67e3b2bd9c4fb169
+    domain: switch
+  - type: turn_off
+    device_id: 3754512bf322550961e32ad044ea30ae
+    entity_id: 9669770fab1b1a75bf0190f3f7b9680f
+    domain: switch
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.xiaomi_sg_2091397517_mb5_anion_p_2_6
+    data: {}
+  alias: System / Turn Off Ionizer
+  description: ''
+dispense_10g:
+  sequence:
+  - device_id: a613c422e70ffe6bb60fd2596ad80964
+    domain: text
+    entity_id: 83b6ddd20e9870a3ebc4a7c8f8450671
+    type: set_value
+    value: '10'
+  alias: System / Dispense 10g
+  description: ''
+dispense_20g:
+  sequence:
+  - device_id: a613c422e70ffe6bb60fd2596ad80964
+    domain: text
+    entity_id: 83b6ddd20e9870a3ebc4a7c8f8450671
+    type: set_value
+    value: '20'
+  alias: System / Dispense 20g
+  description: ''
+system_all_lights_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.all_lights
+  alias: System / All Lights Off
+  description: ''
+system_leaving_house:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data:
+      transition: 2
+    target:
+      area_id:
+      - balcony
+      - bedroom
+      - guest
+      - hallway
+      - kitchen
+      - study
+      - storeroom
+      - bathroom
+      - foyer
+      - living_room
+      - master_bathroom
+  - action: climate.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - climate.daikinap37203
+      - climate.daikinap53642
+      - climate.guest_ac
+      - climate.master_daikin_ac
+  - type: turn_off
+    device_id: dad5900207362c5223e228044b6792ce
+    entity_id: ffd059d05098d7d42a29c0377b80fdb8
+    domain: remote
+  alias: System / Leaving House
+  description: ''
+system_leaving_house_ac_on:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data:
+      transition: 2
+    target:
+      area_id:
+      - balcony
+      - bedroom
+      - guest
+      - hallway
+      - kitchen
+      - study
+      - storeroom
+      - bathroom
+      - foyer
+      - living_room
+      - master_bathroom
+  - type: turn_off
+    device_id: dad5900207362c5223e228044b6792ce
+    entity_id: ffd059d05098d7d42a29c0377b80fdb8
+    domain: remote
+  alias: System / Leaving House (AC On)
+  description: ''
+system_dreame_clean_everywhere:
+  sequence:
+  - device_id: 96225500989a2948a74a28d81c2b3e9e
+    domain: vacuum
+    entity_id: c9208f45606e9a9c2a674cc359ec0b7f
+    type: clean
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+  alias: System / Dreame Clean Everywhere
+  description: ''
+system_restart_aqara_hub_foyer:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: 0a59f4866ed1adf81169c7ace64743d6
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      device_id: 0a59f4866ed1adf81169c7ace64743d6
+  alias: System / Restart Aqara Hub (Foyer)
+  description: ''
+script_bedroom_air_purifier_night_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: ce7176d37b04f3811703fa2347eb3405
+      domain: fan
+      entity_id: b0f68880c8a9195221106784037e9073
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: ce7176d37b04f3811703fa2347eb3405
+      entity_id: b0f68880c8a9195221106784037e9073
+      domain: fan
+  - type: turn_off
+    device_id: ce7176d37b04f3811703fa2347eb3405
+    entity_id: 0c157f6abb06da8076008135579c7a5e
+    domain: switch
+  - type: turn_off
+    device_id: ce7176d37b04f3811703fa2347eb3405
+    entity_id: bed018ce2bcaff9da9b07dace294cc1a
+    domain: switch
+  - action: fan.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: Sleep
+    target:
+      device_id: ce7176d37b04f3811703fa2347eb3405
+  alias: Bedroom / Air Purifier Night Mode
+  description: ''
+script_guest_air_purifier_night_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: c4a43f388fdc15eb04ffd3803812741e
+      domain: fan
+      entity_id: fcad0bd9434fa2e3f12bf1d70a45d082
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: c4a43f388fdc15eb04ffd3803812741e
+      entity_id: fcad0bd9434fa2e3f12bf1d70a45d082
+      domain: fan
+  - device_id: c4a43f388fdc15eb04ffd3803812741e
+    domain: select
+    entity_id: 6696d24368340ada174b574ab0af5ae8
+    type: select_option
+    option: 'off'
+  - action: fan.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: Silent
+    target:
+      entity_id: fan.guest_air_purifier_4
+  - type: turn_off
+    device_id: c4a43f388fdc15eb04ffd3803812741e
+    entity_id: 6ed6a33fac89bc125965f6b5225e409a
+    domain: switch
+  alias: Guest / Air Purifier Night Mode
+  description: ''
+bedroom_air_purifier_day_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: ce7176d37b04f3811703fa2347eb3405
+      domain: fan
+      entity_id: b0f68880c8a9195221106784037e9073
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: ce7176d37b04f3811703fa2347eb3405
+      entity_id: b0f68880c8a9195221106784037e9073
+      domain: fan
+  - type: turn_on
+    device_id: ce7176d37b04f3811703fa2347eb3405
+    entity_id: bed018ce2bcaff9da9b07dace294cc1a
+    domain: switch
+  - action: fan.set_preset_mode
+    metadata: {}
+    target:
+      device_id: ce7176d37b04f3811703fa2347eb3405
+    data:
+      preset_mode: Auto
+  - type: turn_on
+    device_id: ce7176d37b04f3811703fa2347eb3405
+    entity_id: 0c157f6abb06da8076008135579c7a5e
+    domain: switch
+  alias: Bedroom / Air Purifier Day Mode
+  description: ''
+guest_air_purifier_day_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: c4a43f388fdc15eb04ffd3803812741e
+      domain: fan
+      entity_id: fcad0bd9434fa2e3f12bf1d70a45d082
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: c4a43f388fdc15eb04ffd3803812741e
+      entity_id: fcad0bd9434fa2e3f12bf1d70a45d082
+      domain: fan
+  - device_id: c4a43f388fdc15eb04ffd3803812741e
+    domain: select
+    entity_id: 6696d24368340ada174b574ab0af5ae8
+    type: select_option
+    option: dim
+  - action: fan.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: Auto
+    target:
+      entity_id: fan.guest_air_purifier_4
+    enabled: true
+  - type: turn_on
+    device_id: c4a43f388fdc15eb04ffd3803812741e
+    entity_id: 6ed6a33fac89bc125965f6b5225e409a
+    domain: switch
+  alias: Guest / Air Purifier Day Mode
+  description: ''
+study_air_purifier_night_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: 7663297a8476c938a57e7df6b9786c73
+      domain: fan
+      entity_id: db21cfb132e7780a6d5b8344b77d60a0
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: 7663297a8476c938a57e7df6b9786c73
+      entity_id: db21cfb132e7780a6d5b8344b77d60a0
+      domain: fan
+  - type: turn_off
+    device_id: 7663297a8476c938a57e7df6b9786c73
+    entity_id: f52f76529b1ef6a21402e57017f8631c
+    domain: switch
+  - device_id: 7663297a8476c938a57e7df6b9786c73
+    domain: select
+    entity_id: a3839deaf624255ffaa4555a9d88789f
+    type: select_option
+    option: 'off'
+  - action: fan.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: Silent
+    target:
+      entity_id: fan.study_air_purifier_4
+  alias: 'Study/ Air Purifier Night Mode '
+  description: ''
+study_air_purifier_day_mode:
+  sequence:
+  - if:
+    - condition: device
+      device_id: 7663297a8476c938a57e7df6b9786c73
+      domain: fan
+      entity_id: db21cfb132e7780a6d5b8344b77d60a0
+      type: is_off
+    then:
+    - type: turn_on
+      device_id: 7663297a8476c938a57e7df6b9786c73
+      entity_id: db21cfb132e7780a6d5b8344b77d60a0
+      domain: fan
+  - device_id: 7663297a8476c938a57e7df6b9786c73
+    domain: select
+    entity_id: a3839deaf624255ffaa4555a9d88789f
+    type: select_option
+    option: dim
+  - action: fan.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: Auto
+    target:
+      entity_id: fan.study_air_purifier_4
+  - type: turn_on
+    device_id: 7663297a8476c938a57e7df6b9786c73
+    entity_id: f52f76529b1ef6a21402e57017f8631c
+    domain: switch
+  alias: Study/ Air Purifier Day Mode
+  description: ''
+clean_all_except_rooms:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean All Except Rooms
+  description: ''
+clean_bedroom_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 1
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 1
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Bedroom and Outside
+  description: ''
+clean_bedroom_and_guest_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 1
+      - 2
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 1
+      - 2
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Bedroom and Guest and Outside
+  description: ''
+clean_everywhere:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 1
+      - 2
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 1
+      - 2
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Everywhere
+  description: ''
+clean_bedroom_and_study_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 1
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 1
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Bedroom and Study and Outside
+  description: ''
+clean_guest_room_and_study_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 2
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 2
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Guest Room and Study and Outside
+  description: ''
+clean_guest_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 2
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 2
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Guest and Outside
+  description: ''
+clean_study_and_outside:
+  sequence:
+  - action: dreame_vacuum.vacuum_clean_segment
+    metadata: {}
+    data:
+      segments:
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+    target:
+      entity_id: vacuum.dreame_x40_ultra
+  - action: script.system_update_last_cleaned_time
+    data:
+      segments:
+      - 4
+      - 5
+      - 8
+      - 7
+      - 6
+      - 3
+  alias: System / Clean Study and Outside
+  description: ''
+master_light_strip_at_2850k:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: light.master_light_strip_inverted
+    data:
+      color_temp_kelvin: 2850
+  alias: Master Light Strip at 2850K
+  description: ''
+system_update_brightness_when_maintenance_mode_is_on:
+  alias: System / Update Brightness when Maintenance Mode is on
+  description: Updates the brightness of all currently 'on' lights to the maintenance
+    mode level.
+  sequence:
+  - service: light.turn_on
+    data:
+      brightness_pct: '{{ states(''input_number.maintenance_mode_brightness_level'')
+        }}'
+    target:
+      entity_id: '{{ expand(states.light) | selectattr(''state'', ''eq'', ''on'')
+        | map(attribute=''entity_id'') | list }}'
+script_white_noise_on_roam_2:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      volume_level: 0.3
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/72u7iyyy7tQOAGnUwtJn6B?si=e3f043443ecc4252
+  alias: Spotify / White Noise on Roam 2
+  description: ''
+spotify_peaceful_piano_on_bedroom:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id: media_player.bedroom
+    data:
+      volume_level: 0.1
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id: media_player.bedroom
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO?si=504b78fda50d4f7e
+  alias: Spotify / Peaceful Piano on Bedroom
+  description: ''
+spotify_classical_music_for_baby_on_roam_2:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      volume_level: 0.3
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/4E64nd6ReFGw8xqP48r3pW?si=5f70587e67424e7b
+  alias: 'Spotify / Classical Music for Baby on Roam 2 '
+  description: ''
+spotify_nursery_rhymes_on_roam_2:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      volume_level: 0.3
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id: media_player.roam_2
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/0pyecClWTxR8kuwVWtPRmt
+  alias: Spotify / Nursery Rhymes on Roam 2
+  description: ''
+spotify_jazz_in_living_room:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      volume_level: 0.15
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=a253499be7ea40b8
+      enqueue: replace
+  alias: Spotify / Jazz in Living Room
+  description: ''
+spotify_mandopop_in_living_room:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      volume_level: 0.15
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/37i9dQZF1EIg65Vl1DaI6N?si=e46cba0fee1e4f90
+      enqueue: replace
+  alias: Spotify / Mandopop in Living Room
+  description: ''
+spotify_rock_in_living_room:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      volume_level: 0.15
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/2TfPVQUauKGd2FUXURG5fy?si=4f98b10f3a3f46a3
+      enqueue: replace
+  alias: Spotify / Rock in Living Room
+  description: ''
+spotify_pop_in_living_room:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      volume_level: 0.15
+  - action: music_assistant.play_media
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.living_room
+    data:
+      media_type: playlist
+      media_id: https://open.spotify.com/playlist/37i9dQZF1DXbYM3nMM0oPk?si=979acf47c06e4b04
+      enqueue: replace
+  alias: Spotify / Pop in Living Room
+  description: ''
+system_stop_media:
+  sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    target:
+      device_id:
+      - 0c57fdd3a8033ce62a88cafa1192de06
+      - 6ce5e4c8b9545da89d836e506f2880c0
+      - 20c7ac0873ebbacdde24e657e3ae6e83
+      - 22e057c344b8061b3e32515e39c501b0
+    data: {}
+  alias: System / Stop Media
+  description: ''
+living_room_movie_mode_on:
+  sequence:
+  - action: scene.create
+    metadata: {}
+    data:
+      snapshot_entities:
+      - light.living_downlights_r2
+      - light.living_downlights_r3
+      scene_id: before_movie_mode
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 1
+      color_temp_kelvin: 2800
+    target:
+      entity_id:
+      - light.living_downlights_r2
+      - light.living_downlights_r3
+  alias: Living Room / Movie Mode On
+  description: ''
+living_room_movie_mode_off:
+  sequence:
+  - action: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.before_movie_mode
+    data: {}
+  alias: Living Room / Movie Mode Off
+  description: ''
+system_startup_laundry_rack_sync:
+  sequence:
+  - if:
+    - condition: state
+      entity_id: input_boolean.laundry_rack_air_drying_state
+      state: 'off'
+    then:
+    - type: turn_on
+      device_id: dc78a13553ed9b64f43f1b8d0bfe5a3a
+      entity_id: b737a522367f13ff5cee1dfc750c5001
+      domain: switch
+    else:
+    - type: turn_on
+      device_id: 8ef8888c6b1527c1bcb6a9c3f437a0c0
+      entity_id: 05184a3af2b386479c55e63d0138d601
+      domain: switch
+  - if:
+    - condition: state
+      entity_id: input_boolean.laundry_rack_position_state
+      state: 'off'
+    then:
+    - type: turn_on
+      device_id: 34257f3b9fbc87519020addddcfb460f
+      entity_id: cc07187f827c1242a1ccd2752026e388
+      domain: switch
+    else:
+    - type: turn_on
+      device_id: a932ebff922574ab5df8839254f8f886
+      entity_id: 3bac38d848c7b2ca9d15df38a608a87e
+      domain: switch
+  - if:
+    - condition: state
+      entity_id: input_boolean.laundry_light_state
+      state: 'off'
+    then:
+    - type: turn_on
+      device_id: fd4b4cd25eb818288e01c5664aa5bb87
+      entity_id: bc1fc67933d509c248cea632baf81b9a
+      domain: switch
+    else:
+    - type: turn_on
+      device_id: c60796e49343357cd9985afdbe89392a
+      entity_id: 15de1fa7d58b450df9b34c82dbe44839
+      domain: switch
+  - if:
+    - condition: state
+      entity_id: input_boolean.laundry_rack_disinfect_state
+      state: 'off'
+    then:
+    - type: turn_on
+      device_id: 0ac5ed0c617d733f6cdd4fdfb005774e
+      entity_id: 46c9a7e374847041cf1d6505a775bfde
+      domain: switch
+    else:
+    - type: turn_on
+      device_id: 775ac19edfd8a36ad4ecb03a9d64124f
+      entity_id: c4f90087978081866d1ec0ac69c72bf7
+      domain: switch
+  alias: System / Startup Laundry Rack Sync
+  description: ''
+system_away_turn_off_acs:
+  sequence:
+  - if:
+    - condition: state
+      entity_id: climate.master_daikin_ac
+      state: cool
+    then:
+    - action: climate.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: climate.master_daikin_ac
+  - if:
+    - condition: state
+      entity_id: climate.daikinap37203
+      state: cool
+    then:
+    - action: climate.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - climate.daikinap37203
+  - if:
+    - condition: state
+      entity_id: climate.daikinap53642
+      state: cool
+    then:
+    - action: climate.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - climate.daikinap53642
+  - if:
+    - condition: state
+      entity_id: climate.guest_ac
+      state: cool
+    then:
+    - action: climate.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - climate.guest_ac
+  alias: System / Away Turn Off ACs
+  description: ''
+bathroom_toilet_cleaning_lights_on:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.all_common_bathroom_lights
+      - light.all_master_bathroom_lights
+  alias: Bathroom / Toilet Cleaning Lights On
+  description: ''
+bathroom_toilet_cleaning_lights_off:
+  sequence:
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.master_bathroom_motion_sensor
+        state: 'off'
+      - condition: state
+        entity_id: light.all_master_bathroom_lights
+        state: 'on'
+    then:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.all_master_bathroom_lights
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.common_bathroom_presence_sensor_occupancy
+        state: 'off'
+      - condition: state
+        entity_id: light.bathroom_l1
+        state: 'on'
+    then:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - light.bathroom_l1
+  alias: Bathroom / Toilet Cleaning Lights Off
+  description: ''
+system_bed_time_on:
+  alias: System Bed Time On
+  sequence:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - script.script_bedroom_air_purifier_night_mode
+  - if:
+    - condition: state
+      entity_id: binary_sensor.master_windows
+      state: 'off'
+    then:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - cover.master_day_curtain
+        - cover.master_night_curtain
+    alias: Master Curtains
+  - if:
+    - condition: state
+      entity_id: binary_sensor.study_windows
+      state: 'off'
+    then:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - cover.study_day_curtain
+        - cover.study_night_curtain_2
+    alias: Study Curtains
+  - if:
+    - condition: state
+      entity_id: binary_sensor.contact_sensor_2
+      state: 'off'
+    then:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - cover.living_day_curtain
+        - cover.living_ziptrak
+    alias: Living Curtains
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.guest_windows
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.has_guest
+        state: 'off'
+    then: []
+    alias: Guest Curtains
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.all_master_downlights
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.vanity_hair_dryer
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_adaptive_dining_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_foyer_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_foyer_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_guest_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_hallway_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_kitchen_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_kitchen_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_living_room_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_ambient_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_service_yard_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_downlights
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_lightbar
+      - switch.adaptive_lighting_sleep_mode_adaptive_toilet_light_strips
+      - switch.adaptive_lighting_sleep_mode_adaptive_toilet_lights
+    data: {}
+system_bed_time_off:
+  alias: System Bed Time Off
+  sequence:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - script.bedroom_air_purifier_day_mode
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_adaptive_dining_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_foyer_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_foyer_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_guest_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_hallway_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_kitchen_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_kitchen_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_living_room_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_ambient_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_light_strip
+      - switch.adaptive_lighting_sleep_mode_adaptive_master_bedroom_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_service_yard_lights
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_downlights
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_lightbar
+      - switch.adaptive_lighting_sleep_mode_adaptive_toilet_light_strips
+      - switch.adaptive_lighting_sleep_mode_adaptive_toilet_lights
+    data: {}
+foyer_doorbell_ring_actions:
+  alias: Foyer Doorbell Ring Actions
+  sequence:
+  - variables:
+      triggerTimestamp: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}'
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /media/snapshots/doorbell_{{ triggerTimestamp }}.jpg
+    target:
+      device_id: 6a305642c8d835c86d719139d80856ee
+  - if:
+    - condition: state
+      entity_id: device_tracker.pixel_9_pro_xl
+      state:
+      - not_home
+      - GW's Workplace
+      - In Law's
+      - Parent's
+      - 'Sachi''s Workplace '
+    then:
+    - action: notify.mobile_app_pixel_9_pro_xl
+      metadata: {}
+      data:
+        data:
+          image: /media/local/snapshots/doorbell_{{ triggerTimestamp }}.jpg
+        title: Doorbell
+        message: Someone rang the doorbell
+    alias: Send Notification
+  - if:
+    - condition: device
+      device_id: 35a8e6c2c7d87a3a4f877ff6c429ab86
+      domain: media_player
+      entity_id: 5261dc35b6ca28bf5b43c27b87ad8e3b
+      type: is_playing
+    then:
+    - action: media_player.media_play_pause
+      metadata: {}
+      data: {}
+      target:
+        device_id: 35a8e6c2c7d87a3a4f877ff6c429ab86
+    - wait_for_trigger:
+      - trigger: state
+        entity_id:
+        - binary_sensor.main_door_sensor
+        to:
+        - 'off'
+        for:
+          hours: 0
+          minutes: 0
+          seconds: 2
+        from:
+        - 'on'
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - action: media_player.media_play
+      metadata: {}
+      data: {}
+      target:
+        device_id: 35a8e6c2c7d87a3a4f877ff6c429ab86
+    alias: Play / Pause TV
+foyer_doorbell_motion_actions:
+  alias: Foyer Doorbell Motion Actions
+  sequence:
+  - variables:
+      triggerTimestamp: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}'
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /media/snapshots/doorbell_{{ triggerTimestamp }}.jpg
+    target:
+      device_id: 6a305642c8d835c86d719139d80856ee
+  - action: notify.mobile_app_pixel_9_pro_xl
+    metadata: {}
+    data:
+      data:
+        image: /media/local/snapshots/doorbell_{{ triggerTimestamp }}.jpg
+      title: Motion Detected
+      message: Someone at the door
+system_tv_reboot_sequence:
+  alias: System TV Reboot Sequence
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.living_room_tv_plug
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.living_room_tv_plug
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - if:
+    - condition: state
+      entity_id: input_boolean.last_tv_state
+      state:
+      - 'off'
+    then:
+    - action: media_player.turn_off
+      metadata: {}
+      target:
+        device_id: 35a8e6c2c7d87a3a4f877ff6c429ab86
+      data: {}
+system_maintenance_mode_on:
+  alias: System Maintenance Mode On
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.adaptive_lighting_adaptive_dining_lights
+      - switch.adaptive_lighting_adaptive_foyer_lights
+      - switch.adaptive_lighting_adaptive_guest_lights
+      - switch.adaptive_lighting_adaptive_hallway_lights
+      - switch.adaptive_lighting_adaptive_kitchen_lights
+      - switch.adaptive_lighting_adaptive_study_downlights
+      - switch.adaptive_lighting_adaptive_study_lightbar
+      - switch.adaptive_lighting_adaptive_toilet_lights
+      - switch.adaptive_lighting_adaptive_foyer_light_strip
+      - switch.adaptive_lighting_adaptive_kitchen_light_strip
+      - switch.adaptive_lighting_adaptive_living_room_lights
+      - switch.adaptive_lighting_adaptive_master_bedroom_lights
+      - switch.adaptive_lighting_adaptive_service_yard_lights
+      - switch.adaptive_lighting_adaptive_toilet_light_strips
+      - switch.adaptive_lighting_adaptive_master_bedroom_light_strip
+      - switch.adaptive_lighting_adaptive_master_bedroom_ambient_light_strip
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id: script.system_update_brightness_when_maintenance_mode_is_on
+    data: {}
+system_maintenance_mode_off:
+  alias: System Maintenance Mode Off
+  sequence:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.adaptive_lighting_adaptive_dining_lights
+      - switch.adaptive_lighting_adaptive_foyer_lights
+      - switch.adaptive_lighting_adaptive_guest_lights
+      - switch.adaptive_lighting_adaptive_hallway_lights
+      - switch.adaptive_lighting_adaptive_kitchen_lights
+      - switch.adaptive_lighting_adaptive_study_downlights
+      - switch.adaptive_lighting_adaptive_study_lightbar
+      - switch.adaptive_lighting_adaptive_toilet_lights
+      - switch.adaptive_lighting_adaptive_foyer_light_strip
+      - switch.adaptive_lighting_adaptive_kitchen_light_strip
+      - switch.adaptive_lighting_adaptive_living_room_lights
+      - switch.adaptive_lighting_adaptive_master_bedroom_lights
+      - switch.adaptive_lighting_adaptive_service_yard_lights
+      - switch.adaptive_lighting_adaptive_toilet_light_strips
+      - switch.adaptive_lighting_adaptive_master_bedroom_light_strip
+      - switch.adaptive_lighting_adaptive_master_bedroom_ambient_light_strip
+master_ac_toggle:
+  alias: Master / AC Toggle
+  sequence:
+  - service: climate.toggle
+    target:
+      entity_id: climate.master_daikin_ac
+master_ac_dry_mode:
+  alias: Master / AC Dry Mode
+  sequence:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: dry
+    target:
+      entity_id: climate.master_daikin_ac
+master_ac_cool_mode:
+  alias: Master / AC Cool Mode
+  sequence:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: cool
+    target:
+      entity_id: climate.master_daikin_ac
+service_yard_pet_lights_off:
+  alias: Service Yard / Pet Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.service_yard_l1
+      - light.aqara_hub_m1s_78e4_lightbulb
+service_yard_hub_light_on:
+  alias: Service Yard / Hub Light On
+  sequence:
+  - service: light.turn_on
+    data:
+      color_temp_kelvin: 2000
+      brightness_pct: 40
+    target:
+      entity_id: light.aqara_hub_m1s_78e4_lightbulb
+study_enter_work_mode:
+  alias: Study / Enter Work Mode
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_downlights
+      - switch.adaptive_lighting_sleep_mode_adaptive_study_lightbar
+      - switch.adaptive_lighting_adaptive_study_lightbar
+      - switch.adaptive_lighting_adaptive_study_downlights
+  - if:
+    - condition: state
+      entity_id: light.study_light_bar
+      state: 'on'
+    then:
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.study_light_bar
+        - light.study_light_bar_ambilight
+      data:
+        color_temp_kelvin: 4500
+        brightness_pct: 50
+  - if:
+    - condition: state
+      entity_id: light.all_study_downlights
+      state: 'on'
+    then:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_study_downlights
+      data:
+        color_temp_kelvin: 4500
+        brightness_pct: 25
+storeroom_light_on:
+  alias: Storeroom / Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.storeroom_l1
+storeroom_light_off:
+  alias: Storeroom / Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.storeroom_l1
+living_room_tv_off:
+  alias: Living Room / TV Off
+  sequence:
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.bravia_4k_vh22
+living_room_ac_off:
+  alias: Living Room / AC Off
+  sequence:
+  - service: climate.turn_off
+    target:
+      entity_id: climate.daikinap53642
+common_bathroom_lights_on:
+  alias: Common Bathroom / Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.bathroom_l1
+      - light.lightbulb_3
+common_bathroom_lights_off:
+  alias: Common Bathroom / Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.bathroom_l1
+      - light.lightbulb_3
+bathroom_heater_on:
+  alias: Bathroom / Heater On
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.bathroom_heater_switch
+bathroom_heater_off:
+  alias: Bathroom / Heater Off
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.bathroom_heater_switch
+study_downlights_off:
+  alias: Study / Downlights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.all_study_downlights
+study_monitor_off:
+  alias: Study / Monitor Off
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.z_p304mz_p304m_power_strip_1_z_2_monitor
+balcony_light_on:
+  alias: Balcony / Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.balcony_t1
+balcony_light_off:
+  alias: Balcony / Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.balcony_t1
+bed_time_toggle:
+  alias: System / Toggle Bed Time
+  sequence:
+  - service: input_boolean.toggle
+    target:
+      entity_id: input_boolean.is_bed_time
+hallway_lights_on:
+  alias: Hallway / Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.all_hallway_downlights
+hallway_lights_off:
+  alias: Hallway / Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.all_hallway_downlights
+dining_hallway_light_on:
+  alias: Dining / Hallway Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.living_downlights_r1
+dining_hallway_light_off:
+  alias: Dining / Hallway Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.living_downlights_r1
+dining_table_lights_on:
+  alias: Dining / Table Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.all_dining_lights
+dining_table_lights_off:
+  alias: Dining / Table Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.all_dining_lights
+study_downlights_on:
+  alias: Study / Downlights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.all_study_downlights
+study_light_bar_on:
+  alias: Study / Light Bar On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.study_light_bar
+      - light.study_light_bar_ambilight
+study_monitor_on:
+  alias: Study / Monitor On
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.z_p304mz_p304m_power_strip_1_z_2_monitor
+study_all_lights_off:
+  alias: Study / All Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.all_study_downlights
+      - light.study_light_bar
+      - light.study_light_bar_ambilight
+study_pc_peripherals_on:
+  alias: Study / PC Peripherals On
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.z_p304mz_p304m_power_strip_1_z_3_dac
+      - switch.z_p304mz_p304m_power_strip_1_z_4_speaker
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.pc_power_state
+study_pc_peripherals_off:
+  alias: Study / PC Peripherals Off
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.z_p304mz_p304m_power_strip_1_z_3_dac
+      - switch.z_p304mz_p304m_power_strip_1_z_4_speaker
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.pc_power_state
+study_day_curtain_toggle:
+  alias: Study / Day Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.study_day_curtain
+study_night_curtain_toggle:
+  alias: Study / Night Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.study_night_curtain_2
+study_ac_toggle:
+  alias: Study / AC Toggle
+  sequence:
+  - service: climate.toggle
+    target:
+      entity_id: climate.daikinap37203
+living_day_curtain_close:
+  alias: Living / Day Curtain Close
+  sequence:
+  - service: cover.close_cover
+    target:
+      entity_id: cover.living_day_curtain
+master_ac_cool_on:
+  alias: Master / AC Cool On
+  sequence:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: cool
+    target:
+      entity_id: climate.master_daikin_ac
+guest_downlights_off:
+  alias: Guest / Downlights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.all_guest_downlights
+guest_day_curtain_close:
+  alias: Guest / Day Curtain Close
+  sequence:
+  - service: cover.close_cover
+    target:
+      entity_id: cover.guest_day_curtain
+reset_daily_booleans:
+  alias: System / Reset Daily Booleans
+  sequence:
+  - service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.floors_cleaned
+      - input_boolean.manual_work_mode
+cycle_storeroom_fan:
+  alias: System / Cycle Storeroom Fan
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.storeroom_fan
+  - delay:
+      hours: 1
+  - service: switch.turn_off
+    target:
+      entity_id: switch.storeroom_fan
+master_night_curtain_open:
+  alias: Master / Night Curtain Open
+  sequence:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.master_night_curtain
+vanity_hair_dryer_on:
+  alias: Vanity / Hair Dryer On
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.vanity_hair_dryer
+guest_night_curtain_open:
+  alias: Guest / Night Curtain Open
+  sequence:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.guest_night_curtain
+living_curtains_open:
+  alias: Living / Curtains Open
+  sequence:
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.living_day_curtain
+      - cover.living_ziptrak
+foyer_lights_on:
+  alias: Foyer / Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.all_foyer_lights
+foyer_lights_off:
+  alias: Foyer / Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.all_foyer_lights
+system_secure_house:
+  alias: System / Secure House
+  sequence:
+  - service: climate.turn_off
+    target:
+      entity_id:
+      - climate.daikinap37203
+      - climate.daikinap53642
+      - climate.master_daikin_ac
+      - climate.guest_ac
+  - service: cover.close_cover
+    target:
+      area_id:
+      - bedroom
+      - guest
+      - living_room
+      - study
+  - service: switch.turn_off
+    target:
+      entity_id: switch.bathroom_heater_switch
+networking_light_on:
+  alias: Foyer / Networking Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      device_id: 1e4bce58579e676b1eddd9f6f307c200
+networking_light_off:
+  alias: Foyer / Networking Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      device_id: 1e4bce58579e676b1eddd9f6f307c200
+living_day_curtain_toggle:
+  alias: Living / Day Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.living_day_curtain
+living_ac_toggle:
+  alias: Living / AC Toggle
+  sequence:
+  - service: climate.toggle
+    target:
+      entity_id: climate.daikinap53642
+living_ziptrak_toggle:
+  alias: Living / Ziptrak Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.living_ziptrak
+living_dining_lights_off:
+  alias: Living & Dining / Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.all_living_room_lights
+      - light.all_dining_lights
+living_tv_lights_on:
+  alias: Living / TV Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.tv_light_group
+living_tv_lights_off:
+  alias: Living / TV Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.tv_light_group
+guest_day_curtain_toggle:
+  alias: Guest / Day Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.guest_day_curtain
+guest_night_curtain_toggle:
+  alias: Guest / Night Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.guest_night_curtain
+guest_ac_toggle:
+  alias: Guest / AC Toggle
+  sequence:
+  - service: climate.toggle
+    target:
+      entity_id: climate.guest_ac
+guest_curtains_open:
+  alias: Guest / Curtains Open
+  sequence:
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.guest_day_curtain
+      - cover.guest_night_curtain
+guest_downlights_on:
+  alias: Guest / Downlights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.all_guest_downlights
+master_bathroom_lights_on:
+  alias: Master Bathroom / Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.master_l1
+      - light.lightbulb_4
+master_bathroom_lights_off:
+  alias: Master Bathroom / Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.master_l1
+      - light.lightbulb_4
+service_yard_light_on:
+  alias: Service Yard / Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.service_yard_l1
+service_yard_light_off:
+  alias: Service Yard / Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.service_yard_l1
+master_day_curtain_toggle:
+  alias: Master / Day Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.master_day_curtain
+master_night_curtain_toggle:
+  alias: Master / Night Curtain Toggle
+  sequence:
+  - service: cover.toggle
+    target:
+      entity_id: cover.master_night_curtain
+all_lights_except_master_off:
+  alias: System / All Lights Except Master Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.all_kitchen_lights
+      - light.all_master_bathroom_lights
+      - light.all_study_downlights
+      - light.all_guest_downlights
+      - light.all_dining_lights
+      - light.all_living_room_lights
+      - light.all_common_bathroom_lights
+master_curtains_open:
+  alias: Master / Curtains Open
+  sequence:
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.master_day_curtain
+      - cover.master_night_curtain
+master_day_curtain_close:
+  alias: Master / Day Curtain Close
+  sequence:
+  - service: cover.close_cover
+    target:
+      entity_id: cover.master_day_curtain
+master_entrance_light_on:
+  alias: Master / Entrance Light On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id: light.master_downlight_r1
+master_entrance_light_off:
+  alias: Master / Entrance Light Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id: light.master_downlight_r1
+kitchen_all_lights_on:
+  alias: Kitchen / All Lights On
+  sequence:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.all_kitchen_lights
+      - light.kitchen_light_strip
+kitchen_all_lights_off:
+  alias: Kitchen / All Lights Off
+  sequence:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.all_kitchen_lights
+      - light.kitchen_light_strip
+movie_mode_on:
+  alias: System / Movie Mode On
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.adaptive_lighting_adaptive_living_room_lights
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.is_movie_mode
+movie_mode_off:
+  alias: System / Movie Mode Off
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.adaptive_lighting_adaptive_living_room_lights
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.is_movie_mode
+study_exit_work_mode:
+  alias: Study / Exit Work Mode
+  sequence:
+  - if:
+    - condition: state
+      entity_id: input_boolean.is_bed_time
+      state: 'on'
+    then:
+    - service: switch.turn_on
+      target:
+        entity_id:
+        - switch.adaptive_lighting_sleep_mode_adaptive_study_downlights
+        - switch.adaptive_lighting_sleep_mode_adaptive_study_lightbar
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.adaptive_lighting_adaptive_study_downlights
+      - switch.adaptive_lighting_adaptive_study_lightbar
+system_clean_living_room:
+  alias: System / Dreame Clean Living Room
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 8
+system_dreame_clean_kitchen:
+  alias: System / Dreame Clean Kitchen
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 6
+system_dreame_clean_foyer:
+  alias: System / Dreame Clean Foyer
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 7
+system_dreame_clean_study:
+  alias: System / Dreame Clean Study
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 4
+system_dreame_clean_guest:
+  alias: System / Dreame Clean Guest
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 2
+system_dreame_clean_bedroom:
+  alias: System / Dreame Clean Bedroom
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 1
+system_dreame_clean_hallway:
+  alias: System / Dreame Clean Hallway
+  description: ''
+  sequence:
+  - service: script.system_dreame_queue_room_clean
+    data:
+      segment: 5
+system_update_last_cleaned_time:
+  alias: System / Update Last Cleaned Time
+  description: Updates the last cleaned time for given segments
+  sequence:
+  - condition: template
+    value_template: '{{ segments is defined and segments | length > 0 }}'
+  - action: input_datetime.set_datetime
+    data:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    target:
+      entity_id: "{% set entity_map = {\n  1: 'input_datetime.last_cleaned_bedroom',\n
+        \ 2: 'input_datetime.last_cleaned_guest',\n  3: 'input_datetime.last_cleaned_service_yard',\n
+        \ 4: 'input_datetime.last_cleaned_study',\n  5: 'input_datetime.last_cleaned_hallway',\n
+        \ 6: 'input_datetime.last_cleaned_kitchen',\n  7: 'input_datetime.last_cleaned_foyer',\n
+        \ 8: 'input_datetime.last_cleaned_living_room'\n} %} {% set ns = namespace(entities=[])
+        %} {% for seg in segments %}\n  {% if (seg | int) in entity_map %}\n    {%
+        set ns.entities = ns.entities + [entity_map[(seg | int)]] %}\n  {% endif %}\n{%
+        endfor %} {{ ns.entities | join(',') if ns.entities | length > 0 else 'none'
+        }}\n"
+system_dreame_queue_room_clean:
+  alias: System / Dreame Queue Room Clean
+  description: Queues a room cleaning task for the Dreame vacuum.
+  mode: queued
+  fields:
+    segment:
+      description: The segment ID to clean.
+      example: 1
+  sequence:
+  - wait_template: '{{ states(''vacuum.dreame_x40_ultra'') in [''docked'', ''idle'']
+      }}'
+    timeout:
+      hours: 2
+    continue_on_timeout: false
+  - target:
+      entity_id: vacuum.dreame_x40_ultra
+    data:
+      segments:
+      - '{{ segment }}'
+    action: dreame_vacuum.vacuum_clean_segment
+  - data:
+      segments:
+      - '{{ segment }}'
+    action: script.system_update_last_cleaned_time
+  - wait_template: '{{ states(''vacuum.dreame_x40_ultra'') not in [''docked'', ''idle'']
+      }}'
+    timeout:
+      seconds: 30
+    continue_on_timeout: true
+  - wait_template: '{{ states(''vacuum.dreame_x40_ultra'') in [''docked'', ''idle'']
+      }}'
+    timeout:
+      hours: 2
+    continue_on_timeout: true
