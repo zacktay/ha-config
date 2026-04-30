@@ -2122,7 +2122,7 @@
             minutes: 1
             seconds: 0
         then:
-        - action: notify.mobile_app_pixel_9_pro_xl
+        - action: notify.mobile_app_pixel_10_pro_xl
           metadata: {}
           data:
             message: Please check the mesh in Guest Room
@@ -2310,7 +2310,7 @@
         - action: script.dispense_10g
           metadata: {}
           data: {}
-        - action: notify.mobile_app_pixel_9_pro_xl
+        - action: notify.mobile_app_pixel_10_pro_xl
           metadata: {}
           data:
             message: Food has been dispensed - 10g
@@ -2322,7 +2322,7 @@
         - action: script.dispense_10g
           metadata: {}
           data: {}
-        - action: notify.mobile_app_pixel_9_pro_xl
+        - action: notify.mobile_app_pixel_10_pro_xl
           metadata: {}
           data:
             message: Food has been dispensed - 10g
@@ -2334,7 +2334,7 @@
       - action: script.dispense_10g
         metadata: {}
         data: {}
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           message: Food has been dispensed - 10g
@@ -2369,7 +2369,7 @@
         id:
         - Food Level
       sequence:
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: 'Petkit Food Dispenser Level Low '
@@ -2379,7 +2379,7 @@
         id:
         - Water Level
       sequence:
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           message: Please refill
@@ -3544,7 +3544,7 @@
         data: {}
         target:
           entity_id: script.clean_everywhere
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3571,7 +3571,7 @@
         data: {}
         target:
           entity_id: script.clean_guest_room_and_study_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3598,7 +3598,7 @@
         data: {}
         target:
           entity_id: script.clean_bedroom_and_guest_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3625,7 +3625,7 @@
         data: {}
         target:
           entity_id: script.clean_bedroom_and_study_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3652,7 +3652,7 @@
         data: {}
         target:
           entity_id: script.clean_bedroom_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3679,7 +3679,7 @@
         data: {}
         target:
           entity_id: script.clean_study_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -3706,7 +3706,7 @@
         data: {}
         target:
           entity_id: script.clean_guest_and_outside
-      - action: notify.mobile_app_pixel_9_pro_xl
+      - action: notify.mobile_app_pixel_10_pro_xl
         metadata: {}
         data:
           title: Daily Cleaning
@@ -4595,4 +4595,73 @@
     data:
       segments:
       - '{{ state_attr(''vacuum.dreame_x40_ultra'', ''current_segment'') }}'
+  mode: single
+- id: 'system_notify_to_clean_room'
+  alias: System / Notify to Clean Room
+  description: Notifies if a room hasn't been cleaned for a week and the door is open.
+  trigger:
+  - platform: time
+    at: '10:00:00'
+  action:
+  - variables:
+      rooms:
+      - name: Bedroom
+        last_cleaned: input_datetime.last_cleaned_bedroom
+        door_sensor: binary_sensor.master_door_sensor_3
+        clean_script: script.system_dreame_clean_bedroom
+        tag: clean_bedroom
+      - name: Guest Room
+        last_cleaned: input_datetime.last_cleaned_guest
+        door_sensor: binary_sensor.guest_door_sensor_2
+        clean_script: script.system_dreame_clean_guest
+        tag: clean_guest
+      - name: Study
+        last_cleaned: input_datetime.last_cleaned_study
+        door_sensor: binary_sensor.contact_sensor
+        clean_script: script.system_dreame_clean_study
+        tag: clean_study
+      - name: Living Room
+        last_cleaned: input_datetime.last_cleaned_living_room
+        clean_script: script.system_clean_living_room
+        tag: clean_living_room
+      - name: Foyer
+        last_cleaned: input_datetime.last_cleaned_foyer
+        clean_script: script.system_dreame_clean_foyer
+        tag: clean_foyer
+      - name: Kitchen
+        last_cleaned: input_datetime.last_cleaned_kitchen
+        clean_script: script.system_dreame_clean_kitchen
+        tag: clean_kitchen
+  - repeat:
+      for_each: '{{ rooms }}'
+      sequence:
+      - condition: template
+        value_template: '{{ (now() - (states(repeat.item.last_cleaned) | as_datetime
+          | as_local)).days >= 7 }}'
+      - condition: template
+        value_template: '{{ repeat.item.door_sensor is not defined or is_state(repeat.item.door_sensor, ''on'') }}'
+      - service: notify.mobile_app_pixel_10_pro_xl
+        data:
+          title: Clean {{ repeat.item.name }}?
+          message: '{{ repeat.item.name }} has not been cleaned for a week{{ " and the door is open" if repeat.item.door_sensor is defined else "" }}.'
+          data:
+            tag: '{{ repeat.item.tag }}'
+            actions:
+            - action: CLEAN_ROOM
+              title: Confirm
+              data:
+                script: '{{ repeat.item.clean_script }}'
+            - action: DISMISS
+              title: Dismiss
+- id: 'system_handle_clean_room_notification_action'
+  alias: System / Handle Clean Room Notification Action
+  description: Handles the 'Confirm' action from the clean room notification.
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: CLEAN_ROOM
+  action:
+  - service: '{{ trigger.event.data.script }}'
+    data: {}
   mode: single
