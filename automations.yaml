@@ -4596,7 +4596,7 @@
       segments:
       - '{{ state_attr(''vacuum.dreame_x40_ultra'', ''current_segment'') }}'
   mode: single
-- id: 'system_notify_to_clean_room'
+- id: system_notify_to_clean_room
   alias: System / Notify to Clean Room
   description: Notifies if a room hasn't been cleaned for a week and the door is open.
   trigger:
@@ -4639,11 +4639,13 @@
         value_template: '{{ (now() - (states(repeat.item.last_cleaned) | as_datetime
           | as_local)).days >= 7 }}'
       - condition: template
-        value_template: '{{ repeat.item.door_sensor is not defined or is_state(repeat.item.door_sensor, ''on'') }}'
+        value_template: '{{ repeat.item.door_sensor is not defined or is_state(repeat.item.door_sensor,
+          ''on'') }}'
       - service: notify.mobile_app_pixel_10_pro_xl
         data:
           title: Clean {{ repeat.item.name }}?
-          message: '{{ repeat.item.name }} has not been cleaned for a week{{ " and the door is open" if repeat.item.door_sensor is defined else "" }}.'
+          message: '{{ repeat.item.name }} has not been cleaned for a week{{ " and
+            the door is open" if repeat.item.door_sensor is defined else "" }}.'
           data:
             tag: '{{ repeat.item.tag }}'
             actions:
@@ -4653,7 +4655,7 @@
                 script: '{{ repeat.item.clean_script }}'
             - action: DISMISS
               title: Dismiss
-- id: 'system_handle_clean_room_notification_action'
+- id: system_handle_clean_room_notification_action
   alias: System / Handle Clean Room Notification Action
   description: Handles the 'Confirm' action from the clean room notification.
   trigger:
@@ -4663,5 +4665,32 @@
       action: CLEAN_ROOM
   action:
   - service: '{{ trigger.event.data.script }}'
+    data: {}
+  mode: single
+- id: '1777561918778'
+  alias: System / Daily Backup
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:00:00
+  conditions: []
+  actions:
+  - action: shell_command.backup_to_git
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1777642239698'
+  alias: Kitchen / Bluetooth Proxy Button
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.kitchen_bluetooth_proxy_reset_button
+    to:
+    - 'on'
+  conditions: []
+  actions:
+  - action: script.system_dreame_clean_kitchen
+    metadata: {}
     data: {}
   mode: single
