@@ -4376,15 +4376,24 @@
         metadata: {}
         data: {}
     - conditions:
-      - alias: Button 2 Single Press (Unassigned)
+      - alias: Button 2 Single Press (Bed Time)
         condition: trigger
         id: Single Press Button 2
-      sequence: []
+      sequence:
+      - action: script.system_toggle_adaptive_lighting_sleep_mode
+        metadata: {}
+        data:
+          entities:
+          - study_downlights
+          - study_lightbar
     - conditions:
-      - alias: Button 3 Single Press (Unassigned)
+      - alias: Button 3 Single Press (Toggle AC)
         condition: trigger
         id: Single Press Button 3
-      sequence: []
+      sequence:
+      - action: script.study_ac_toggle
+        metadata: {}
+        data: {}
     - conditions:
       - alias: Button 4 Single Press (Unassigned)
         condition: trigger
@@ -4435,13 +4444,13 @@
     type: button5
     subtype: single_press
     trigger: device
-    id: Single Press Button 6
+    id: Single Press Button 5
   - device_id: a9cb60ce48a19a0e9437aa87b43a52f5
     domain: homekit_controller
     type: button6
     subtype: single_press
     trigger: device
-    id: Single Press Button 5
+    id: Single Press Button 6
   conditions: []
   actions:
   - choose:
@@ -4454,25 +4463,38 @@
         metadata: {}
         data: {}
     - conditions:
-      - alias: Button 2 Single Press (Unassigned)
+      - alias: Button 2 Single Press (Bed Time)
         condition: trigger
         id: Single Press Button 2
-      sequence: []
+      sequence:
+      - action: script.system_toggle_adaptive_lighting_sleep_mode
+        metadata: {}
+        data:
+          entities: guest_lights
     - conditions:
-      - alias: Button 3 Single Press (Unassigned)
+      - alias: Button 3 Single Press (Toggle AC)
         condition: trigger
         id: Single Press Button 3
-      sequence: []
+      sequence:
+      - action: script.guest_ac_toggle
+        metadata: {}
+        data: {}
     - conditions:
-      - alias: Button 4 Single Press (Unassigned)
+      - alias: Button 4 Single Press (Play White Noise)
         condition: trigger
         id: Single Press Button 4
-      sequence: []
+      sequence:
+      - action: script.script_white_noise_on_roam_2
+        metadata: {}
+        data: {}
     - conditions:
-      - alias: Button 5 Single Press (Unassigned)
+      - alias: Button 5 Single Press (Play Nirsery Rhyme)
         condition: trigger
         id: Single Press Button 5
-      sequence: []
+      sequence:
+      - action: script.spotify_nursery_rhymes_on_roam_2
+        metadata: {}
+        data: {}
     - conditions:
       - alias: Button 6 Single Press (Unassigned)
         condition: trigger
@@ -4532,15 +4554,25 @@
         metadata: {}
         data: {}
     - conditions:
-      - alias: Button 2 Single Press (Unassigned)
+      - alias: Button 2 Single Press (Bed Time)
         condition: trigger
         id: Single Press Button 2
-      sequence: []
+      sequence:
+      - action: script.system_toggle_adaptive_lighting_sleep_mode
+        metadata: {}
+        data:
+          entities:
+          - master_bedroom_lights
+          - master_bedroom_light_strip
+          - master_bedroom_ambient_light_strip
     - conditions:
-      - alias: Button 3 Single Press (Unassigned)
+      - alias: Button 3 Single Press (Toggle AC)
         condition: trigger
         id: Single Press Button 3
-      sequence: []
+      sequence:
+      - action: script.master_ac_toggle
+        metadata: {}
+        data: {}
     - conditions:
       - alias: Button 4 Single Press (Unassigned)
         condition: trigger

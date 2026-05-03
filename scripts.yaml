@@ -1932,3 +1932,22 @@ system_dreame_queue_room_clean:
     timeout:
       hours: 2
     continue_on_timeout: true
+system_toggle_adaptive_lighting_sleep_mode:
+  alias: System / Toggle Adaptive Lighting Sleep Mode
+  description: Toggles adaptive lighting sleep mode for a specific room or list of rooms.
+  fields:
+    entities:
+      description: The room suffix(s) to toggle adaptive lighting sleep mode for.
+      example: switch.adaptive_lighting_sleep_mode_adaptive_guest_lights would be guest_lights
+  sequence:
+  - action: switch.toggle
+    metadata: {}
+    target:
+      entity_id: >
+        {% set entities = [entities] if entities is string else entities %}
+        {% set ns = namespace(entities=[]) %}
+        {% for e in entities %}
+          {% set ns.entities = ns.entities + ['switch.adaptive_lighting_sleep_mode_adaptive_' ~ e] %}
+        {% endfor %}
+        {{ ns.entities }}
+    data: {}
