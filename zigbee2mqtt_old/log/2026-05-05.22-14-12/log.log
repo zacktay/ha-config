@@ -1,0 +1,35 @@
+[2026-05-05 22:14:12] info: 	z2m: Logging to console, file (filename: log.log)
+[2026-05-05 22:14:12] info: 	z2m: Starting Zigbee2MQTT version 2.10.0 (commit #unknown)
+[2026-05-05 22:14:12] info: 	z2m: Starting zigbee-herdsman (10.0.7)
+[2026-05-05 22:14:13] info: 	zh:adapter:discovery: Matched adapter: {"path":"/dev/ttyUSB0","manufacturer":"SONOFF","serialNumber":"2a1fe9e77aa0f011b15f2681bb936ffa","pnpId":"usb-SONOFF_SONOFF_Dongle_Max_MG24_2a1fe9e77aa0f011b15f2681bb936ffa-if00-port0","vendorId":"10c4","productId":"ea60"} => ember: 4
+[2026-05-05 22:14:13] info: 	zh:ember: Using default stack config.
+[2026-05-05 22:14:13] info: 	zh:ember: ======== Ember Adapter Starting ========
+[2026-05-05 22:14:13] info: 	zh:ember:ezsp: ======== EZSP starting ========
+[2026-05-05 22:14:13] info: 	zh:ember:uart:ash: ======== ASH Adapter reset ========
+[2026-05-05 22:14:13] info: 	zh:ember:uart:ash: RTS/CTS config is off, enabling software flow control.
+[2026-05-05 22:14:13] info: 	zh:ember:uart:ash: Serial port opened
+[2026-05-05 22:14:13] info: 	zh:ember:uart:ash: ======== ASH starting ========
+[2026-05-05 22:14:13] error: 	z2m: Publish 'set' 'state' to 'bathroom_water_heater' failed: 'Error: ZCL command 0x54ef441000d0073a/1 genOnOff.on({}, {"timeout":10000,"disableResponse":false,"disableRecovery":false,"disableDefaultResponse":false,"direction":0,"reservedBits":0,"writeUndiv":false}) failed (~x~> [ZCL to=0x54ef441000d0073a:45363 apsFrame={"profileId":260,"clusterId":6,"sourceEndpoint":1,"destinationEndpoint":1,"options":4416,"groupId":0,"sequence":0}] Failed to send request with status=NETWORK_DOWN.)'
+[2026-05-05 22:14:18] info: 	zh:ember:uart:ash: ======== ASH Adapter reset ========
+[2026-05-05 22:14:18] info: 	zh:ember:uart:ash: ======== ASH starting ========
+[2026-05-05 22:14:23] info: 	zh:ember:uart:ash: ======== ASH Adapter reset ========
+[2026-05-05 22:14:23] info: 	zh:ember:uart:ash: ======== ASH starting ========
+[2026-05-05 22:14:28] info: 	zh:ember:uart:ash: ======== ASH Adapter reset ========
+[2026-05-05 22:14:28] info: 	zh:ember:uart:ash: ======== ASH starting ========
+[2026-05-05 22:14:33] info: 	zh:ember:uart:ash: ======== ASH Adapter reset ========
+[2026-05-05 22:14:33] info: 	zh:ember:uart:ash: ======== ASH starting ========
+[2026-05-05 22:14:38] error: 	z2m: Error while starting zigbee-herdsman
+[2026-05-05 22:14:38] error: 	z2m: Failed to start zigbee-herdsman
+[2026-05-05 22:14:38] error: 	z2m: Check https://www.zigbee2mqtt.io/guide/installation/20_zigbee2mqtt-fails-to-start_crashes-runtime.html for possible solutions
+[2026-05-05 22:14:38] error: 	z2m: Exiting...
+[2026-05-05 22:14:38] error: 	z2m: Error: Failed to start EZSP layer with status=HOST_FATAL_ERROR.
+    at EmberAdapter.initEzsp (/app/node_modules/.pnpm/zigbee-herdsman@10.0.7/node_modules/zigbee-herdsman/src/adapter/ember/adapter/emberAdapter.ts:666:19)
+    at EmberAdapter.start (/app/node_modules/.pnpm/zigbee-herdsman@10.0.7/node_modules/zigbee-herdsman/src/adapter/ember/adapter/emberAdapter.ts:1538:24)
+    at Controller.start (/app/node_modules/.pnpm/zigbee-herdsman@10.0.7/node_modules/zigbee-herdsman/src/controller/controller.ts:146:29)
+    at Zigbee.start (/app/lib/zigbee.ts:70:27)
+    at Controller.start (/app/lib/controller.ts:111:29)
+    at start (/app/index.js:156:5)
+    at triggerWatchdog (/app/index.js:36:9)
+    at Controller.exit [as exitCallback] (/app/index.js:52:13)
+    at Controller.exit (/app/lib/controller.ts:371:16)
+    at Controller.stop (/app/lib/controller.ts:366:16)

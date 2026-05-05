@@ -1,0 +1,275 @@
+{
+    "0xa4c1380fbc1affff": {
+        "current": 0,
+        "voltage": 238.28,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "energy": 0,
+        "update": {
+            "state": "idle",
+            "installed_version": 8194,
+            "latest_version": 8194,
+            "latest_source": null,
+            "latest_release_notes": null
+        },
+        "linkquality": 204,
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        }
+    },
+    "0xa4c1380f6711ffff": {
+        "current": 0,
+        "voltage": 239.65,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "energy": 0,
+        "linkquality": 92,
+        "update": {
+            "state": "idle",
+            "installed_version": 8194,
+            "latest_version": 8194,
+            "latest_source": null,
+            "latest_release_notes": null
+        },
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        }
+    },
+    "0xa4c1380f71a7ffff": {
+        "state": "ON",
+        "power": 0,
+        "current": 0,
+        "voltage": 238.58,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "outlet_control_protect": false,
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "linkquality": 92,
+        "update": {
+            "state": "idle",
+            "installed_version": 8194,
+            "latest_version": 8194,
+            "latest_source": null,
+            "latest_release_notes": null
+        },
+        "energy": 0,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        }
+    },
+    "0xa4c13802f108ffff": {
+        "current": 0,
+        "voltage": 238.36,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "energy": 0,
+        "update": {
+            "state": "available",
+            "installed_version": 4098,
+            "latest_version": 8194,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/Sonoff/SN-TLSR8656-S60-01-v2.0.2.ota",
+            "latest_release_notes": null
+        },
+        "linkquality": 132,
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        }
+    },
+    "0xa4c13802ab1cffff": {
+        "current": 0,
+        "voltage": 0,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        },
+        "linkquality": 92,
+        "update": {
+            "state": "available",
+            "installed_version": 4098,
+            "latest_version": 8194,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/Sonoff/SN-TLSR8656-S60-01-v2.0.2.ota",
+            "latest_release_notes": null
+        }
+    },
+    "0x54ef441000d0073a": {
+        "state": "ON",
+        "device_temperature": 46,
+        "power_outage_count": 0,
+        "voltage": 239.08,
+        "current": 13.22,
+        "power": 1.16,
+        "power_outage_memory": true,
+        "operation_mode": "control_relay",
+        "led_disabled_night": false,
+        "flip_indicator_light": "OFF",
+        "linkquality": 196,
+        "energy": 0.56,
+        "consumption": 0.5552279949188232
+    },
+    "0xa4c1380fb349ffff": {
+        "current": 0,
+        "voltage": 238.46,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "energy": 0,
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        },
+        "update": {
+            "state": "available",
+            "installed_version": 4098,
+            "latest_version": 8194,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/Sonoff/SN-TLSR8656-S60-01-v2.0.2.ota",
+            "latest_release_notes": null
+        },
+        "linkquality": 132
+    },
+    "0xa4c13802aaa2ffff": {
+        "current": 0,
+        "voltage": 238.45,
+        "power": 0,
+        "outlet_control_protect": false,
+        "overload_protection": {
+            "enable_max_voltage": "DISABLE",
+            "enable_min_current": "DISABLE",
+            "enable_min_power": "DISABLE",
+            "enable_min_voltage": "DISABLE",
+            "max_current": 0,
+            "max_power": 0,
+            "max_voltage": 0,
+            "min_current": 0,
+            "min_power": 0,
+            "min_voltage": 0
+        },
+        "state": "ON",
+        "power_on_behavior": "previous",
+        "network_indicator": false,
+        "energy_yesterday": 0,
+        "energy_today": 0,
+        "energy_month": 0,
+        "energy": 0,
+        "inching_control_set": {
+            "inching_control": "DISABLE",
+            "inching_mode": "OFF"
+        },
+        "linkquality": 204,
+        "update": {
+            "state": "available",
+            "installed_version": 4098,
+            "latest_version": 8194,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/Sonoff/SN-TLSR8656-S60-01-v2.0.2.ota",
+            "latest_release_notes": null
+        }
+    }
+}

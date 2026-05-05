@@ -1,0 +1,66 @@
+version: 5
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: Iuquaisi5Thooz6EiHoote1sheiyeeS1WeNu9ieh0wee6koorohD4maa4ah6quoo
+serial:
+  port: /dev/ttyAMA1
+  adapter: ember
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 180
+    - 137
+    - 255
+    - 247
+    - 151
+    - 123
+    - 29
+    - 174
+    - 84
+    - 219
+    - 53
+    - 30
+    - 65
+    - 254
+    - 156
+    - 184
+  pan_id: 42663
+  ext_pan_id:
+    - 221
+    - 50
+    - 198
+    - 243
+    - 172
+    - 45
+    - 116
+    - 90
+frontend:
+  enabled: true
+  port: 8099
+homeassistant:
+  enabled: true
+devices:
+  '0xa4c1380fbc1affff':
+    friendly_name: living_day_curtain_plug
+    homeassistant:
+      name: living_day_curtain_plug
+  '0xa4c1380f6711ffff':
+    friendly_name: study_day_curtain_plug
+  '0xa4c1380f71a7ffff':
+    friendly_name: study_night_curtain_plug
+  '0xa4c13802f108ffff':
+    friendly_name: guest_day_curtain_plug
+  '0xa4c13802ab1cffff':
+    friendly_name: guest_night_curtain_plug
+    state_action: false
+  '0x54ef441000d0073a':
+    friendly_name: bathroom_water_heater
+  '0xa4c1380fb349ffff':
+    friendly_name: master_day_curtain_plug
+  '0xa4c13802aaa2ffff':
+    friendly_name: master_night_curtain_plug

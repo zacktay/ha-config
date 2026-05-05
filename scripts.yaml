@@ -1370,15 +1370,17 @@ common_bathroom_lights_off:
 bathroom_heater_on:
   alias: Bathroom / Heater On
   sequence:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.bathroom_heater_switch
+  - target:
+      entity_id: switch.bathroom_water_heater
+    action: switch.turn_on
+    data: {}
 bathroom_heater_off:
   alias: Bathroom / Heater Off
   sequence:
-  - service: switch.turn_off
-    target:
-      entity_id: switch.bathroom_heater_switch
+  - target:
+      entity_id: switch.bathroom_water_heater
+    action: switch.turn_off
+    data: {}
 study_downlights_off:
   alias: Study / Downlights Off
   sequence:
@@ -1600,23 +1602,24 @@ foyer_lights_off:
 system_secure_house:
   alias: System / Secure House
   sequence:
-  - service: climate.turn_off
-    target:
+  - target:
       entity_id:
       - climate.daikinap37203
       - climate.daikinap53642
       - climate.master_daikin_ac
       - climate.guest_ac
-  - service: cover.close_cover
-    target:
+    action: climate.turn_off
+  - target:
       area_id:
       - bedroom
       - guest
       - living_room
       - study
-  - service: switch.turn_off
-    target:
-      entity_id: switch.bathroom_heater_switch
+    action: cover.close_cover
+  - target:
+      entity_id: switch.bathroom_water_heater
+    action: switch.turn_off
+    data: {}
 networking_light_on:
   alias: Foyer / Networking Light On
   sequence:
@@ -1934,20 +1937,19 @@ system_dreame_queue_room_clean:
     continue_on_timeout: true
 system_toggle_adaptive_lighting_sleep_mode:
   alias: System / Toggle Adaptive Lighting Sleep Mode
-  description: Toggles adaptive lighting sleep mode for a specific room or list of rooms.
+  description: Toggles adaptive lighting sleep mode for a specific room or list of
+    rooms.
   fields:
     entities:
       description: The room suffix(s) to toggle adaptive lighting sleep mode for.
-      example: switch.adaptive_lighting_sleep_mode_adaptive_guest_lights would be guest_lights
+      example: switch.adaptive_lighting_sleep_mode_adaptive_guest_lights would be
+        guest_lights
   sequence:
   - action: switch.toggle
     metadata: {}
     target:
-      entity_id: >
-        {% set entities = [entities] if entities is string else entities %}
-        {% set ns = namespace(entities=[]) %}
-        {% for e in entities %}
-          {% set ns.entities = ns.entities + ['switch.adaptive_lighting_sleep_mode_adaptive_' ~ e] %}
-        {% endfor %}
-        {{ ns.entities }}
+      entity_id: "{% set entities = [entities] if entities is string else entities
+        %} {% set ns = namespace(entities=[]) %} {% for e in entities %}\n  {% set
+        ns.entities = ns.entities + ['switch.adaptive_lighting_sleep_mode_adaptive_'
+        ~ e] %}\n{% endfor %} {{ ns.entities }}\n"
     data: {}

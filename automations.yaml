@@ -231,7 +231,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - switch.bathroom_heater_switch
+    - switch.bathroom_water_heater
     to:
     - 'on'
     for:
@@ -246,7 +246,8 @@
         condition: trigger
         id: Heater On
       sequence:
-      - service: script.bathroom_heater_off
+      - action: script.bathroom_heater_off
+        data: {}
   mode: single
 - id: '1747658207023'
   alias: Kitchen / Idle
