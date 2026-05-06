@@ -618,7 +618,7 @@
       sequence:
       - type: turn_on
         device_id: c60796e49343357cd9985afdbe89392a
-        entity_id: 15de1fa7d58b450df9b34c82dbe44839
+        entity_id: 5af27d56ab272be120c0434bff2ca177
         domain: switch
     - conditions:
       - condition: trigger
@@ -627,7 +627,7 @@
       sequence:
       - type: turn_on
         device_id: fd4b4cd25eb818288e01c5664aa5bb87
-        entity_id: bc1fc67933d509c248cea632baf81b9a
+        entity_id: 4790b07e1aa5d275f3fe6405a086238c
         domain: switch
   mode: single
 - id: '1762153189272'
@@ -654,7 +654,7 @@
       sequence:
       - type: turn_on
         device_id: a932ebff922574ab5df8839254f8f886
-        entity_id: 3bac38d848c7b2ca9d15df38a608a87e
+        entity_id: 802a00f29c6fa8bf053cd184180eb677
         domain: switch
     - conditions:
       - condition: trigger
@@ -663,7 +663,7 @@
       sequence:
       - type: turn_on
         device_id: 34257f3b9fbc87519020addddcfb460f
-        entity_id: cc07187f827c1242a1ccd2752026e388
+        entity_id: 60c0440ba82b005245bc95911dd0054d
         domain: switch
   mode: single
 - id: '1762153743353'
@@ -690,7 +690,7 @@
       sequence:
       - type: turn_on
         device_id: 8ef8888c6b1527c1bcb6a9c3f437a0c0
-        entity_id: 05184a3af2b386479c55e63d0138d601
+        entity_id: a6314ff03c9583448482533457d25925
         domain: switch
     - conditions:
       - condition: trigger
@@ -699,7 +699,7 @@
       sequence:
       - type: turn_on
         device_id: dc78a13553ed9b64f43f1b8d0bfe5a3a
-        entity_id: b737a522367f13ff5cee1dfc750c5001
+        entity_id: 3cff00f5ab9e167c253035877b50a03d
         domain: switch
   mode: single
 - id: '1762153998939'
@@ -736,7 +736,7 @@
       sequence:
       - type: turn_on
         device_id: 775ac19edfd8a36ad4ecb03a9d64124f
-        entity_id: c4f90087978081866d1ec0ac69c72bf7
+        entity_id: b71ded3bc01d1bab353cc8d74b264109
         domain: switch
     - conditions:
       - condition: trigger
@@ -745,7 +745,7 @@
       sequence:
       - type: turn_on
         device_id: 0ac5ed0c617d733f6cdd4fdfb005774e
-        entity_id: 46c9a7e374847041cf1d6505a775bfde
+        entity_id: 11de5a61ab421b656517e3df46cac6a8
         domain: switch
   mode: single
 - id: '1762307492695'
@@ -1546,24 +1546,27 @@
       - if:
         - alias: Gate is unlocked
           condition: state
-          entity_id: lock.matter_foyer_gate_lock
-          state: unlocked
+          entity_id: lock.aqara_gate_lock_lock_mechanism
+          state:
+          - unlocked
         then:
-        - service: lock.lock
-          target:
-            entity_id: lock.matter_foyer_gate_lock
+        - target:
+            entity_id:
+            - lock.aqara_gate_lock_lock_mechanism
+          action: lock.lock
+          data: {}
     - conditions:
       - alias: Double Press (Secure House)
         condition: trigger
         id: Double Press
       sequence:
-      - service: script.system_secure_house
+      - action: script.system_secure_house
     - conditions:
       - alias: Long Press (All Lights Off)
         condition: trigger
         id: Long Press
       sequence:
-      - service: script.system_all_lights_off
+      - action: script.system_all_lights_off
   mode: queued
   max: 10
 - id: '1762315771092'
@@ -4726,4 +4729,29 @@
   - action: script.system_dreame_clean_kitchen
     metadata: {}
     data: {}
+  mode: single
+- id: '1778036790413'
+  alias: 'Kitchen / Coffee Machine '
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.is_bed_time
+  - trigger: sun
+    event: sunrise
+    offset: '-1:00:00'
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: input_boolean.is_bed_time
+      state:
+      - 'on'
+    then:
+    - action: script.kitchen_coffee_machine_off
+      metadata: {}
+      data: {}
+    else:
+    - action: script.kitchen_coffee_machine_on
+      metadata: {}
+      data: {}
   mode: single

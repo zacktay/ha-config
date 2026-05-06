@@ -821,12 +821,12 @@ system_startup_laundry_rack_sync:
     then:
     - type: turn_on
       device_id: dc78a13553ed9b64f43f1b8d0bfe5a3a
-      entity_id: b737a522367f13ff5cee1dfc750c5001
+      entity_id: 3cff00f5ab9e167c253035877b50a03d
       domain: switch
     else:
     - type: turn_on
       device_id: 8ef8888c6b1527c1bcb6a9c3f437a0c0
-      entity_id: 05184a3af2b386479c55e63d0138d601
+      entity_id: a6314ff03c9583448482533457d25925
       domain: switch
   - if:
     - condition: state
@@ -835,12 +835,12 @@ system_startup_laundry_rack_sync:
     then:
     - type: turn_on
       device_id: 34257f3b9fbc87519020addddcfb460f
-      entity_id: cc07187f827c1242a1ccd2752026e388
+      entity_id: 60c0440ba82b005245bc95911dd0054d
       domain: switch
     else:
     - type: turn_on
       device_id: a932ebff922574ab5df8839254f8f886
-      entity_id: 3bac38d848c7b2ca9d15df38a608a87e
+      entity_id: 802a00f29c6fa8bf053cd184180eb677
       domain: switch
   - if:
     - condition: state
@@ -849,12 +849,12 @@ system_startup_laundry_rack_sync:
     then:
     - type: turn_on
       device_id: fd4b4cd25eb818288e01c5664aa5bb87
-      entity_id: bc1fc67933d509c248cea632baf81b9a
+      entity_id: 4790b07e1aa5d275f3fe6405a086238c
       domain: switch
     else:
     - type: turn_on
       device_id: c60796e49343357cd9985afdbe89392a
-      entity_id: 15de1fa7d58b450df9b34c82dbe44839
+      entity_id: 5af27d56ab272be120c0434bff2ca177
       domain: switch
   - if:
     - condition: state
@@ -863,12 +863,12 @@ system_startup_laundry_rack_sync:
     then:
     - type: turn_on
       device_id: 0ac5ed0c617d733f6cdd4fdfb005774e
-      entity_id: 46c9a7e374847041cf1d6505a775bfde
+      entity_id: 11de5a61ab421b656517e3df46cac6a8
       domain: switch
     else:
     - type: turn_on
       device_id: 775ac19edfd8a36ad4ecb03a9d64124f
-      entity_id: c4f90087978081866d1ec0ac69c72bf7
+      entity_id: b71ded3bc01d1bab353cc8d74b264109
       domain: switch
   alias: System / Startup Laundry Rack Sync
   description: ''
@@ -1953,3 +1953,83 @@ system_toggle_adaptive_lighting_sleep_mode:
         ns.entities = ns.entities + ['switch.adaptive_lighting_sleep_mode_adaptive_'
         ~ e] %}\n{% endfor %} {{ ns.entities }}\n"
     data: {}
+kitchen_coffee_machine_on:
+  sequence:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_fellow_ode_plug
+      - switch.kitchen_fellow_stagg_plug
+    data: {}
+  alias: Kitchen / Coffee Machine On
+  description: ''
+kitchen_coffee_machine_off:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_fellow_ode_plug
+      - switch.kitchen_fellow_stagg_plug
+    data: {}
+  alias: Kitchen / Coffee Machine Off
+  description: ''
+kitchen_rice_cooker_on:
+  sequence:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.kitchen_rice_cooker_plug
+    data: {}
+  alias: Kitchen / Rice Cooker On
+  description: ''
+kitchen_air_fryer_on:
+  sequence:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_air_fryer_plug
+    data: {}
+  alias: Kitchen / Air Fryer On
+  description: ''
+kitchen_microwave_on:
+  sequence:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_microwave_plug
+    data: {}
+  alias: Kitchen / Microwave On
+  description: ''
+kitchen_rice_cooker_off:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.kitchen_rice_cooker_plug
+    data: {}
+  alias: Kitchen / Rice Cooker Off
+  description: ''
+kitchen_air_fryer_off:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_air_fryer_plug
+    data: {}
+  alias: Kitchen / Air Fryer Off
+  description: ''
+kitchen_microwave_off:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - switch.kitchen_microwave_plug
+    data: {}
+  alias: Kitchen / Microwave Off
+  description: ''
