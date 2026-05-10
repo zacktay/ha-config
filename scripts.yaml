@@ -2033,3 +2033,30 @@ kitchen_microwave_off:
     data: {}
   alias: Kitchen / Microwave Off
   description: ''
+master_night_curtain_close:
+  sequence:
+  - action: cover.close_cover
+    metadata: {}
+    target:
+      entity_id: cover.master_night_curtain
+    data: {}
+  alias: Master / Night Curtain Close
+  description: ''
+guest_night_curtain_close:
+  sequence:
+  - action: cover.close_cover
+    metadata: {}
+    target:
+      entity_id: cover.guest_night_curtain
+    data: {}
+  alias: Guest / Night Curtain Close
+  description: ''
+study_night_curtain_close:
+  sequence:
+  - action: cover.close_cover
+    metadata: {}
+    target:
+      entity_id: cover.study_night_curtain_2
+    data: {}
+  alias: 'Study / Night Curtain Close '
+  description: ''
