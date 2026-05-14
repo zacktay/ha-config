@@ -2567,13 +2567,14 @@
           state: closed
         then:
         - action: script.master_curtains_open
+          data: {}
       - if:
         - condition: state
           entity_id: cover.master_night_curtain
           state:
-          - open
+          - closed
         then:
-        - action: script.master_night_curtain_close
+        - action: script.master_night_curtain_open
           data: {}
     - conditions:
       - alias: Window Closed
