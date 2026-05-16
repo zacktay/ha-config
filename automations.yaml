@@ -3199,6 +3199,10 @@
           entity_id: input_boolean.baby_in_master
           state:
           - 'off'
+        - condition: state
+          entity_id: binary_sensor.lumos_projector_playing
+          state:
+          - 'off'
       sequence:
       - if:
         - condition: state
@@ -3237,6 +3241,10 @@
         - condition: state
           entity_id: input_boolean.is_bed_time
           state: 'off'
+        - condition: state
+          entity_id: binary_sensor.lumos_projector_playing
+          state:
+          - 'off'
       sequence:
       - action: light.turn_on
         metadata: {}
@@ -3255,6 +3263,10 @@
           state:
           - 'off'
           entity_id: input_boolean.is_bed_time
+        - condition: state
+          entity_id: binary_sensor.lumos_projector_playing
+          state:
+          - 'off'
       sequence:
       - if:
         - condition: state
@@ -4766,6 +4778,28 @@
       data: {}
     else:
     - action: script.kitchen_coffee_machine_on
+      metadata: {}
+      data: {}
+  mode: single
+- id: '1778938844581'
+  alias: Master / Movie Mode
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.lumos_projector_playing
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.lumos_projector_playing
+      state:
+      - 'on'
+    then:
+    - action: script.master_movie_mode_on
+      metadata: {}
+      data: {}
+    else:
+    - action: script.master_movie_mode_off
       metadata: {}
       data: {}
   mode: single

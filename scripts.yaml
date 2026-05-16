@@ -2060,3 +2060,35 @@ study_night_curtain_close:
     data: {}
   alias: 'Study / Night Curtain Close '
   description: ''
+master_movie_mode_on:
+  sequence:
+  - action: scene.create
+    metadata: {}
+    data:
+      snapshot_entities:
+      - light.master_downlights_r4
+      - light.master_downlights_r5
+      scene_id: bedroom_before_movie_mode
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - light.master_downlights_r4
+      - light.master_downlights_r5
+    data: {}
+  alias: Master / Movie Mode On
+  description: ''
+master_movie_mode_off:
+  sequence:
+  - action: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.bedroom_before_movie_mode
+    data: {}
+  alias: Master / Movie Mode Off
+  description: ''
