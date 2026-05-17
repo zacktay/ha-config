@@ -2095,17 +2095,18 @@
       - if:
         - condition: state
           entity_id: cover.guest_day_curtain
-          state: open
+          state:
+          - closed
         then:
-        - action: script.guest_day_curtain_close
+        - action: script.guest_day_curtain_open
           data: {}
       - if:
         - condition: state
           entity_id: cover.guest_night_curtain
           state:
-          - open
+          - closed
         then:
-        - action: script.guest_night_curtain_close
+        - action: script.guest_night_curtain_open
           data: {}
     - conditions:
       - alias: Window Closed

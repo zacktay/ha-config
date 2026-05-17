@@ -2092,3 +2092,12 @@ master_movie_mode_off:
     data: {}
   alias: Master / Movie Mode Off
   description: ''
+guest_day_curtain_open:
+  sequence:
+  - target:
+      entity_id:
+      - cover.guest_day_curtain
+    action: cover.open_cover
+    data: {}
+  alias: Guest / Day Curtain Open
+  description: ''
