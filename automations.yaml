@@ -3422,7 +3422,7 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.master_temperature_sensor_humidity_sensor_3
+    - sensor.bedroom_switchbot_meter_pro_humidity
     for:
       hours: 0
       minutes: 10
@@ -3442,7 +3442,7 @@
     id: Dry Mode (1.5H)
   - trigger: numeric_state
     entity_id:
-    - sensor.master_temperature_sensor_humidity_sensor_3
+    - sensor.bedroom_switchbot_meter_pro_humidity
     id: Target Humidity Achieved
     for:
       hours: 0
@@ -3457,13 +3457,13 @@
         condition: trigger
         id: High Humidity (Detected)
       sequence:
-      - service: script.master_ac_dry_mode
+      - action: script.master_ac_dry_mode
     - conditions:
       - alias: Dry mode has been on for 1.5 hours
         condition: trigger
         id: Dry Mode (1.5H)
       sequence:
-      - service: script.master_ac_cool_mode
+      - action: script.master_ac_cool_mode
     - conditions:
       - alias: Target humidity has been achieved
         condition: trigger
@@ -3476,7 +3476,7 @@
           attribute: hvac_action
           state: drying
         then:
-        - service: script.master_ac_cool_mode
+        - action: script.master_ac_cool_mode
   mode: single
 - id: '1762481347634'
   alias: Foyer/ Doorbell
@@ -3922,7 +3922,7 @@
   description: ''
   triggers:
   - trigger: template
-    value_template: "{{ \n  states('sensor.master_temperature_sensor_humidity_sensor_3')
+    value_template: "{{ \n  states('sensor.bedroom_switchbot_meter_pro_humidity')
       | int(0) <= state_attr('humidifier.dmaker_sg_975646016_22ht', 'humidity') |
       int(0)\n  and \n  states('sensor.master_bathroom_humidity_sensor_2') | int(0)
       <= state_attr('humidifier.dmaker_sg_975646016_22ht', 'humidity') | int(0)\n}}"
