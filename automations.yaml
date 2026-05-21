@@ -4515,17 +4515,39 @@
         condition: trigger
         id: Single Press Button 4
       sequence:
-      - action: script.script_white_noise_on_roam_2
-        metadata: {}
-        data: {}
+      - if:
+        - condition: media_player.is_playing
+          target:
+            device_id: 22e057c344b8061b3e32515e39c501b0
+          options:
+            behavior: any
+        then:
+        - action: script.guest_stop_media
+          metadata: {}
+          data: {}
+        else:
+        - action: script.script_white_noise_on_roam_2
+          metadata: {}
+          data: {}
     - conditions:
       - alias: Button 5 Single Press (Play Nirsery Rhyme)
         condition: trigger
         id: Single Press Button 5
       sequence:
-      - action: script.spotify_nursery_rhymes_on_roam_2
-        metadata: {}
-        data: {}
+      - if:
+        - condition: media_player.is_playing
+          target:
+            device_id: 22e057c344b8061b3e32515e39c501b0
+          options:
+            behavior: any
+        then:
+        - action: script.guest_stop_media
+          metadata: {}
+          data: {}
+        else:
+        - action: script.spotify_nursery_rhymes_on_roam_2
+          metadata: {}
+          data: {}
     - conditions:
       - alias: Button 6 Single Press (Unassigned)
         condition: trigger

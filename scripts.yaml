@@ -2101,3 +2101,42 @@ guest_day_curtain_open:
     data: {}
   alias: Guest / Day Curtain Open
   description: ''
+guest_stop_media:
+  sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      device_id: 22e057c344b8061b3e32515e39c501b0
+  alias: Guest / Stop Media
+  description: ''
+master_stop_media:
+  sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      device_id: 0c57fdd3a8033ce62a88cafa1192de06
+  alias: Master / Stop Media
+  description: ''
+study_stop_media:
+  sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - media_player.gw_pc
+      - media_player.dining_display
+      - media_player.study
+  alias: Study / Stop Media
+  description: ''
+living_stop_media:
+  sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      device_id: 20c7ac0873ebbacdde24e657e3ae6e83
+  alias: Living / Stop Media
+  description: ''
