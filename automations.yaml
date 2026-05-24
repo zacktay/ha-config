@@ -1162,7 +1162,7 @@
     entity_id: 491c6c2805f166b014119cb6e38136d6
     domain: sensor
     trigger: device
-    above: 10
+    above: 21.2
     id: 'On'
   - type: power
     device_id: fbbd702e98b0ccb83ba35e7e999609e7
@@ -1170,7 +1170,7 @@
     domain: sensor
     trigger: device
     id: 'Off'
-    below: 2
+    below: 21.5
   conditions: []
   actions:
   - choose:
@@ -1184,13 +1184,13 @@
           entity_id: input_boolean.pc_power_state
           state: 'off'
       sequence:
-      - service: script.study_pc_peripherals_on
+      - action: script.study_pc_peripherals_on
     - conditions:
       - alias: PC Turned Off
         condition: trigger
         id: 'Off'
       sequence:
-      - service: script.study_pc_peripherals_off
+      - action: script.study_pc_peripherals_off
   mode: single
 - id: '1762312811906'
   alias: Study / Wireless Switch
