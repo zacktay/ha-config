@@ -1162,7 +1162,7 @@
     entity_id: 491c6c2805f166b014119cb6e38136d6
     domain: sensor
     trigger: device
-    above: 21.2
+    above: 22
     id: 'On'
   - type: power
     device_id: fbbd702e98b0ccb83ba35e7e999609e7
@@ -1170,7 +1170,7 @@
     domain: sensor
     trigger: device
     id: 'Off'
-    below: 21.5
+    below: 22
   conditions: []
   actions:
   - choose:
