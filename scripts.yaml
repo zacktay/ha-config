@@ -1479,25 +1479,27 @@ study_all_lights_off:
 study_pc_peripherals_on:
   alias: Study / PC Peripherals On
   sequence:
-  - service: switch.turn_on
-    target:
+  - target:
       entity_id:
       - switch.z_p304mz_p304m_power_strip_1_z_3_dac
-      - switch.z_p304mz_p304m_power_strip_1_z_4_speaker
-  - service: input_boolean.turn_on
-    target:
+      - switch.jbl_speaker_switches
+    action: switch.turn_on
+    data: {}
+  - target:
       entity_id: input_boolean.pc_power_state
+    action: input_boolean.turn_on
 study_pc_peripherals_off:
   alias: Study / PC Peripherals Off
   sequence:
-  - service: switch.turn_off
-    target:
+  - target:
       entity_id:
       - switch.z_p304mz_p304m_power_strip_1_z_3_dac
-      - switch.z_p304mz_p304m_power_strip_1_z_4_speaker
-  - service: input_boolean.turn_off
-    target:
+      - switch.jbl_speaker_switches
+    action: switch.turn_off
+    data: {}
+  - target:
       entity_id: input_boolean.pc_power_state
+    action: input_boolean.turn_off
 study_day_curtain_toggle:
   alias: Study / Day Curtain Toggle
   sequence:

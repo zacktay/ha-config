@@ -1162,15 +1162,23 @@
     entity_id: 491c6c2805f166b014119cb6e38136d6
     domain: sensor
     trigger: device
-    above: 22
+    above: 25
     id: 'On'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
   - type: power
     device_id: fbbd702e98b0ccb83ba35e7e999609e7
     entity_id: 491c6c2805f166b014119cb6e38136d6
     domain: sensor
     trigger: device
     id: 'Off'
-    below: 22
+    below: 25
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
   conditions: []
   actions:
   - choose:
