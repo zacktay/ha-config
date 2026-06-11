@@ -2142,3 +2142,32 @@ living_stop_media:
       device_id: 20c7ac0873ebbacdde24e657e3ae6e83
   alias: Living / Stop Media
   description: ''
+study_sachi_pc_peripherals_on:
+  sequence:
+  - action: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.s_p304m_s_2
+      - switch.s_p304m_s_3
+  - target:
+      entity_id:
+      - input_boolean.sachi_pc_power_state
+    action: input_boolean.turn_on
+    data: {}
+  alias: Study / Sachi PC Peripherals On
+  description: ''
+study_sachi_pc_peripherals_off:
+  sequence:
+  - action: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.s_p304m_s_3
+      - switch.s_p304m_s_2
+  - target:
+      entity_id: input_boolean.sachi_pc_power_state
+    action: input_boolean.turn_off
+    data: {}
+  alias: Study / Sachi PC Peripherals Off
+  description: ''

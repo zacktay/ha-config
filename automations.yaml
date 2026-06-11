@@ -4900,3 +4900,55 @@
             entity_id: input_boolean.study_fan
           data: {}
   mode: single
+- id: '1781145962795'
+  alias: Study / Sachi PC Power
+  description: ''
+  triggers:
+  - type: power
+    device_id: 27a3a604bae177cb5534b3b62b2d8d42
+    entity_id: 6ecad29047d4966756abc5447a47d473
+    domain: sensor
+    trigger: device
+    id: 'On'
+    above: 10
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: power
+    device_id: 27a3a604bae177cb5534b3b62b2d8d42
+    entity_id: 6ecad29047d4966756abc5447a47d473
+    domain: sensor
+    trigger: device
+    id: 'Off'
+    below: 5
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - alias: PC Turned On
+        condition: and
+        conditions:
+        - condition: trigger
+          id: 'On'
+        - condition: state
+          entity_id: input_boolean.sachi_pc_power_state
+          state:
+          - 'off'
+      sequence:
+      - action: script.study_sachi_pc_peripherals_on
+        metadata: {}
+        data: {}
+    - conditions:
+      - alias: PC Turned Off
+        condition: trigger
+        id: 'Off'
+      sequence:
+      - action: script.study_sachi_pc_peripherals_off
+        metadata: {}
+        data: {}
+  mode: single
