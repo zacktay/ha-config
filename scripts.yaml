@@ -2129,7 +2129,6 @@ study_stop_media:
     target:
       entity_id:
       - media_player.gw_pc
-      - media_player.dining_display
       - media_player.study
   alias: Study / Stop Media
   description: ''
