@@ -950,8 +950,8 @@
           data: {}
           target:
             entity_id:
-            - light.study_light_bar
-            - light.study_light_bar_ambilight
+            - light.yeelink_cn_2033139860_lamp39_s_2_light
+        enabled: true
       - alias: Monitor
         if:
         - condition: and
@@ -996,8 +996,8 @@
           data: {}
           target:
             entity_id:
-            - light.study_light_bar
-            - light.study_light_bar_ambilight
+            - light.yeelink_cn_2033139860_lamp39_s_2_light
+        enabled: true
       alias: Too Dim
     - conditions:
       - condition: trigger
@@ -1011,8 +1011,7 @@
         target:
           entity_id:
           - light.all_study_downlights
-          - light.study_light_bar
-          - light.study_light_bar_ambilight
+          - light.yeelink_cn_2033139860_lamp39_s_2_light
       alias: Not Detected or Too Bright
   mode: single
 - id: '1762311177779'
@@ -4122,7 +4121,7 @@
   - trigger: state
     entity_id:
     - light.all_study_downlights
-    - light.study_light_bar
+    - light.yeelink_cn_2033139860_lamp39_s_2_light
   actions:
   - choose:
     - conditions:
@@ -4132,6 +4131,7 @@
         state: 'on'
       sequence:
       - action: script.study_enter_work_mode
+        data: {}
     - conditions:
       - alias: Work Mode is Off
         condition: state
@@ -4951,4 +4951,32 @@
       - action: script.study_sachi_pc_peripherals_off
         metadata: {}
         data: {}
+  mode: single
+- id: '1782140005750'
+  alias: Study / Sachi PC Light Bar
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.sachi_pc_power_state
+  conditions: []
+  actions:
+  - if:
+    - condition: switch.is_on
+      target:
+        entity_id: input_boolean.sachi_pc_power_state
+      options:
+        behavior: any
+        for: 00:00:00
+    then:
+    - action: light.turn_on
+      metadata: {}
+      target:
+        entity_id: light.study_light_bar
+      data: {}
+    else:
+    - action: light.turn_off
+      metadata: {}
+      target:
+        entity_id: light.study_light_bar
+      data: {}
   mode: single

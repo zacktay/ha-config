@@ -1296,37 +1296,37 @@ service_yard_hub_light_on:
 study_enter_work_mode:
   alias: Study / Enter Work Mode
   sequence:
-  - service: switch.turn_off
-    target:
+  - target:
       entity_id:
       - switch.adaptive_lighting_sleep_mode_adaptive_study_downlights
       - switch.adaptive_lighting_sleep_mode_adaptive_study_lightbar
       - switch.adaptive_lighting_adaptive_study_lightbar
       - switch.adaptive_lighting_adaptive_study_downlights
+    action: switch.turn_off
   - if:
     - condition: state
-      entity_id: light.study_light_bar
-      state: 'on'
+      entity_id: light.yeelink_cn_2033139860_lamp39_s_2_light
+      state:
+      - 'on'
     then:
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
-        - light.study_light_bar
-        - light.study_light_bar_ambilight
+        - light.yeelink_cn_2033139860_lamp39_s_2_light
       data:
         color_temp_kelvin: 4500
         brightness_pct: 50
+      action: light.turn_on
   - if:
     - condition: state
       entity_id: light.all_study_downlights
       state: 'on'
     then:
-    - service: light.turn_on
-      target:
+    - target:
         entity_id: light.all_study_downlights
       data:
         color_temp_kelvin: 4500
         brightness_pct: 25
+      action: light.turn_on
 storeroom_light_on:
   alias: Storeroom / Light On
   sequence:
@@ -1456,11 +1456,11 @@ study_downlights_on:
 study_light_bar_on:
   alias: Study / Light Bar On
   sequence:
-  - service: light.turn_on
-    target:
+  - target:
       entity_id:
-      - light.study_light_bar
-      - light.study_light_bar_ambilight
+      - light.yeelink_cn_2033139860_lamp39_s_2_light
+    action: light.turn_on
+    data: {}
 study_monitor_on:
   alias: Study / Monitor On
   sequence:
@@ -1470,12 +1470,12 @@ study_monitor_on:
 study_all_lights_off:
   alias: Study / All Lights Off
   sequence:
-  - service: light.turn_off
-    target:
+  - target:
       entity_id:
       - light.all_study_downlights
-      - light.study_light_bar
-      - light.study_light_bar_ambilight
+      - light.yeelink_cn_2033139860_lamp39_s_2_light
+    action: light.turn_off
+    data: {}
 study_pc_peripherals_on:
   alias: Study / PC Peripherals On
   sequence:
