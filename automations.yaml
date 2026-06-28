@@ -4980,3 +4980,129 @@
         entity_id: light.study_light_bar
       data: {}
   mode: single
+- id: '1782652418592'
+  alias: Guest / Ac Automation
+  description: ''
+  triggers:
+  - trigger: temperature.crossed_threshold
+    target:
+      entity_id: sensor.guest_switchbot_meter_pro_temperature
+    options:
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 29
+          unit_of_measurement: °C
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+    id: Hot
+    enabled: false
+  - trigger: temperature.crossed_threshold
+    target:
+      entity_id: sensor.guest_switchbot_meter_pro_temperature
+    options:
+      threshold:
+        type: below
+        value:
+          active_choice: number
+          number: 28
+          unit_of_measurement: °C
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+    id: Cold
+    enabled: false
+  - trigger: humidity.crossed_threshold
+    target:
+      entity_id: sensor.guest_switchbot_meter_pro_humidity
+    options:
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 65
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+    id: Humid
+  - trigger: humidity.crossed_threshold
+    target:
+      entity_id: sensor.guest_switchbot_meter_pro_humidity
+    options:
+      threshold:
+        type: below
+        value:
+          active_choice: number
+          number: 60
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+    id: Not Humid
+  conditions:
+  - condition: window.is_closed
+    target:
+      entity_id: binary_sensor.guest_windows
+    options:
+      for: 00:00:00
+    enabled: false
+  - condition: sun
+    before: sunrise
+    after: sunset
+  - condition: or
+    conditions:
+    - condition: climate.is_on
+      target:
+        device_id: d9139487e7bcf84c7bbd40a25a4e6055
+      options:
+        behavior: any
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Hot
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id: climate.guest_ac
+        data:
+          hvac_mode: cool
+    - conditions:
+      - condition: trigger
+        id:
+        - Cold
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id: climate.guest_ac
+        data:
+          hvac_mode: 'off'
+    - conditions:
+      - condition: trigger
+        id:
+        - Humid
+      sequence:
+      - action: humidifier.turn_off
+        metadata: {}
+        target:
+          entity_id: humidifier.deerma_sg_657443509_jsq2w
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - Not Humid
+      sequence:
+      - action: humidifier.turn_on
+        metadata: {}
+        target:
+          entity_id: humidifier.deerma_sg_657443509_jsq2w
+        data: {}
+  mode: single
