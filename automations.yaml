@@ -5106,3 +5106,63 @@
           entity_id: humidifier.deerma_sg_657443509_jsq2w
         data: {}
   mode: single
+- id: '1782827997262'
+  alias: 'Kitchen / Bottle Warmer '
+  description: ''
+  triggers:
+  - trigger: power.crossed_threshold
+    target:
+      entity_id: sensor.kitchen_bottle_warmer_current_consumption
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 5
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          unit_of_measurement: W
+          number: 2
+    id: Start
+  - trigger: power.crossed_threshold
+    target:
+      entity_id: sensor.kitchen_bottle_warmer_current_consumption
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 10
+      threshold:
+        type: below
+        value:
+          active_choice: number
+          unit_of_measurement: W
+          number: 5
+    id: Stop
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Start
+      sequence:
+      - action: notify.mobile_app_pixel_10_pro_xl
+        metadata: {}
+        data:
+          title: Bottle Warming Started
+          message: Please wait
+    - conditions:
+      - condition: trigger
+        id:
+        - Stop
+      sequence:
+      - action: notify.mobile_app_pixel_10_pro_xl
+        metadata: {}
+        data:
+          title: Bottle Warming Completed
+          message: Please remove bottle from warmer
+  mode: single
