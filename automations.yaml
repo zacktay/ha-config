@@ -5050,7 +5050,7 @@
       entity_id: binary_sensor.guest_windows
     options:
       for: 00:00:00
-    enabled: false
+    enabled: true
   - condition: sun
     before: sunrise
     after: sunset
