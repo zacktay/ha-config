@@ -2292,6 +2292,7 @@
   - trigger: time
     at: 02:00:00
     id: 2AM
+    enabled: false
   - trigger: time
     at: '13:00:00'
     id: 1PM
@@ -2711,6 +2712,12 @@
   - condition: state
     entity_id: input_boolean.is_bed_time
     state: 'off'
+  - condition: humidifier.is_off
+    target:
+      device_id: fb44305e7a981e86839723de11966dc4
+    options:
+      for: 00:00:00
+      behavior: any
   actions:
   - choose:
     - conditions:
@@ -5024,7 +5031,7 @@
         type: above
         value:
           active_choice: number
-          number: 65
+          number: 68
       for:
         hours: 0
         minutes: 30
@@ -5038,7 +5045,7 @@
         type: below
         value:
           active_choice: number
-          number: 60
+          number: 58
       for:
         hours: 0
         minutes: 30
