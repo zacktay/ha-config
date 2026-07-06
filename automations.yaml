@@ -238,14 +238,14 @@
       hours: 1
       minutes: 0
       seconds: 0
-    id: Heater has been on for 1 hour
+    id: 'on'
   conditions: []
   actions:
   - choose:
     - conditions:
-      - alias: Heater has been on for 1 hour
-        condition: trigger
-        id: Heater On
+      - condition: trigger
+        id:
+        - 'on'
       sequence:
       - action: script.bathroom_heater_off
         data: {}
